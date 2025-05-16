@@ -41,7 +41,7 @@ public class Movie extends BaseEntity {
     @Column(nullable = false)
     private LocalDate releaseDate;
 
-    @Column(nullable = false, precision = 2, scale = 1)
+    @Column
     private Double averageRating;
 
     @Column(nullable = false)
