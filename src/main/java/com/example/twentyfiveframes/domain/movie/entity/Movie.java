@@ -1,6 +1,7 @@
 package com.example.twentyfiveframes.domain.movie.entity;
 
 import com.example.twentyfiveframes.domain.common.BaseEntity;
+import com.example.twentyfiveframes.domain.movie.dto.MovieRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,21 +30,34 @@ public class Movie extends BaseEntity {
     private String director;
 
     @Column(nullable = false)
-    private int ageLimit; // 예: 12, 15, 19
+    private Integer ageLimit; // 예: 12, 15, 19
 
     //@Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private String genre; // enum 생성 후 변경
 
     @Column(nullable = false)
-    private int runningTime; // 단위: 분
+    private Integer runningTime; // 단위: 분
 
     @Column(nullable = false)
     private LocalDate releaseDate;
 
     @Column(nullable = false)
-    private Double averageRating;
+    private Double averageRating = -1.0; // 평점이 없을 경우 -1 반환
 
     @Column(nullable = false)
-    private Long totalViews;
+    private Long totalViews = 0L;
+
+    Movie(MovieRequestDto.Create dto) {
+//        this.id = id;
+//        this.userId = userId; todo 생성자 유저 추가
+        this.title = dto.getTitle();
+        this.summary = dto.getSummary();
+        this.director = dto.getDirector();
+        this.ageLimit = dto.getAgeLimit();
+        this.genre = dto.getGenre();
+        this.runningTime = dto.getRunningTime();
+        this.releaseDate = dto.getReleaseDate();
+    }
+
 }
