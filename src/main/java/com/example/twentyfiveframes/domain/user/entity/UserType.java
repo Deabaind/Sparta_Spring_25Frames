@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum UserType {
     ROLE_USER("USER"),
-    ROLE_DISTRIBUTOR("DISTRIBUTOR");
+    ROLE_PROVIDER ("PROVIDER");
 
     private final String userType;
 }
