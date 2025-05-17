@@ -32,9 +32,9 @@ public class Movie extends BaseEntity {
     @Column(nullable = false)
     private Integer ageLimit; // 예: 12, 15, 19
 
-    //@Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private String genre; // enum 생성 후 변경
+    private MovieGenre genre; // enum 생성 후 변경
 
     @Column(nullable = false)
     private Integer runningTime; // 단위: 분
