@@ -15,7 +15,7 @@ public class MovieServiceImpl implements MovieService{
 
     // 영화 등록
     @Override
-    public MovieResponseDto.create createMovie(MovieRequestDto.Create dto) { //todo 로그인 유저 추가
+    public MovieResponseDto.create saveMovie(MovieRequestDto.Create dto) { //todo 로그인 유저 추가
         Movie movie = new Movie(dto);
         movieRepository.save(movie);
 

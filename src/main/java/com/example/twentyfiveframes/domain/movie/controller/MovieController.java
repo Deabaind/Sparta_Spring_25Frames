@@ -20,8 +20,8 @@ public class MovieController {
 
     // 영화 등록
     @PostMapping
-    public ResponseEntity<MovieResponseDto.create> createMovie(@RequestBody MovieRequestDto.Create dto) { //todo 로그인 유저 정보 받기
-        MovieResponseDto.create response = movieService.createMovie(dto);
+    public ResponseEntity<MovieResponseDto.create> saveMovie(@RequestBody MovieRequestDto.Create dto) { //todo 로그인 유저 정보 받기
+        MovieResponseDto.create response = movieService.saveMovie(dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
