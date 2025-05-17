@@ -30,10 +30,13 @@ public class MovieRequestDto {
         private String director;
 
         @NotNull(message = "관람 제한 연령은 필수 입력 항목입니다.")
-        private Long ageLimit; //0,12,15,18 연령제한
+        private Integer ageLimit; //0,12,15,18 연령제한
 
         @NotBlank(message = "영화 장르는 필수 입력 항목입니다.")
         private String genre; //이넘으로 변경
+
+        @NotBlank(message = "영화 장르는 필수 입력 항목입니다.")
+        private Integer runningTime;
 
         @NotNull(message = "영화 개봉일은 필수 입력 항목입니다.")
         @DateTimeFormat(pattern = "yyyy-MM-dd")

@@ -48,9 +48,8 @@ public class Movie extends BaseEntity {
     @Column(nullable = false)
     private Long totalViews = 0L;
 
-    Movie(MovieRequestDto.Create dto) {
-//        this.id = id;
-//        this.userId = userId; todo 생성자 유저 추가
+    public Movie(MovieRequestDto.Create dto) {
+//        this.userId = userId; todo 로그인 유저 추가
         this.title = dto.getTitle();
         this.summary = dto.getSummary();
         this.director = dto.getDirector();
