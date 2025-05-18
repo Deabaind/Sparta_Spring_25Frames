@@ -1,4 +1,4 @@
-package com.example.twentyfiveframes.common.movie.service;
+package com.example.twentyfiveframes.domain.movie.service;
 
 import com.example.twentyfiveframes.domain.movie.dto.MovieRequestDto;
 import com.example.twentyfiveframes.domain.movie.dto.MovieResponseDto;
