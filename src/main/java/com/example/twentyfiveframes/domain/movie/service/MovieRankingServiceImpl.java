@@ -4,6 +4,7 @@ import com.example.twentyfiveframes.domain.movie.dto.MovieRankingResponse;
 import com.example.twentyfiveframes.domain.movie.entity.Movie;
 import com.example.twentyfiveframes.domain.movie.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +25,11 @@ public class MovieRankingServiceImpl implements MovieRankingService {
                 .limit(10)
                 .map(MovieRankingResponse::from)
                 .toList();
+    }
+
+    // 캐시 무효화 메서드 (리뷰 등록 시 호출될 예정)
+    @Override
+    @CacheEvict(value = "movieRanking", allEntries = true)
+    public void evictRankingCache() {
     }
 }
