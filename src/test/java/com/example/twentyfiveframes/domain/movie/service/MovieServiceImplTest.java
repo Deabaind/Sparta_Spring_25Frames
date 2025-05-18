@@ -43,9 +43,6 @@ public class MovieServiceImplTest {
                 "계획이 다 있음","봉준호",15,
                 MovieGenre.DRAMA,131, LocalDate.of(2019,5,30));
 
-        Movie movie = new Movie(user, dto);
-        ReflectionTestUtils.setField(movie, "id", 1L);
-
         given(movieRepository.save(any())).willAnswer(invocation -> {
             Movie saved = invocation.getArgument(0);
             ReflectionTestUtils.setField(saved, "id", 1L);
