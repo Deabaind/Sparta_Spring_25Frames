@@ -5,5 +5,5 @@ import com.example.twentyfiveframes.domain.movie.dto.MovieResponseDto;
 import com.example.twentyfiveframes.domain.user.entity.User;
 
 public interface MovieService {
-    MovieResponseDto.create saveMovie(User user, MovieRequestDto.Create dto);
+    MovieResponseDto.Save saveMovie(User user, MovieRequestDto.Save dto);
 }

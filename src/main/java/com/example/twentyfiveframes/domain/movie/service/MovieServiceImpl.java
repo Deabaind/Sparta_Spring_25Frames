@@ -16,11 +16,11 @@ public class MovieServiceImpl implements MovieService{
 
     // 영화 등록
     @Override
-    public MovieResponseDto.create saveMovie(User user, MovieRequestDto.Create dto) {
+    public MovieResponseDto.Save saveMovie(User user, MovieRequestDto.Save dto) {
         Movie movie = new Movie(user, dto);
         movieRepository.save(movie);
 
-        return new MovieResponseDto.create("영화가 등록되었습니다.", movie.getId());
+        return new MovieResponseDto.Save("영화가 등록되었습니다.", movie.getId());
     }
 
     // 영화 수정

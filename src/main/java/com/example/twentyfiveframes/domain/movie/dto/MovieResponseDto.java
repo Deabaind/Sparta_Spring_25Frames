@@ -7,7 +7,7 @@ public class MovieResponseDto {
 
     @Getter
     @RequiredArgsConstructor
-    public static class create {
+    public static class Save {
         private final String message;
         private final Long movieId;
     }

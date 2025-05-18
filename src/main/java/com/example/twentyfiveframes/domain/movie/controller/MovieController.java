@@ -22,11 +22,11 @@ public class MovieController {
 
     // 영화 등록
     @PostMapping
-    public ResponseEntity<MovieResponseDto.create> saveMovie(@RequestBody MovieRequestDto.Create dto) {
+    public ResponseEntity<MovieResponseDto.Save> saveMovie(@RequestBody MovieRequestDto.Save dto) {
         //todo 임시로 로그인 유저로 사용하는 객체, JWT 구현 후 반드시 제거
         User fakeUser = new User("provider@email.com", "TEST1234", "테스트", UserType.ROLE_PROVIDER);
 
-        MovieResponseDto.create response = movieService.saveMovie(fakeUser, dto);
+        MovieResponseDto.Save response = movieService.saveMovie(fakeUser, dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

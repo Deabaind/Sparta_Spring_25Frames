@@ -39,7 +39,7 @@ public class MovieServiceImplTest {
         // given
         User user = new User();
 
-        MovieRequestDto.Create dto = new MovieRequestDto.Create("기생충",
+        MovieRequestDto.Save dto = new MovieRequestDto.Save("기생충",
                 "계획이 다 있음","봉준호",15,
                 MovieGenre.DRAMA,131, LocalDate.of(2019,5,30));
 
@@ -53,7 +53,7 @@ public class MovieServiceImplTest {
         });
 
         // when
-        MovieResponseDto.create result = movieService.saveMovie(user, dto);
+        MovieResponseDto.Save result = movieService.saveMovie(user, dto);
 
         // then
         assertThat(result.getMessage()).isEqualTo("영화가 등록되었습니다.");

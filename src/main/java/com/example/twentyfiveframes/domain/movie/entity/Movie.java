@@ -49,7 +49,7 @@ public class Movie extends BaseEntity {
     @Column(nullable = false)
     private Long totalViews = 0L;
 
-    public Movie(User user, MovieRequestDto.Create dto) {
+    public Movie(User user, MovieRequestDto.Save dto) {
         this.userId = user.getId();
         this.title = dto.getTitle();
         this.summary = dto.getSummary();

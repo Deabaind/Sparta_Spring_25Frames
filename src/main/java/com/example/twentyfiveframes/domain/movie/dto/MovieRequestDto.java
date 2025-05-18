@@ -17,7 +17,7 @@ public class MovieRequestDto {
     // 영화 등록
     @Getter
     @AllArgsConstructor
-    public static class Create {
+    public static class Save {
 
         @NotBlank(message = "영화 제목은 필수 입력 항목입니다.")
         @Size(max = 30, message = "30자 이하로 입력할 수 있습니다.")
