@@ -2,6 +2,7 @@ package com.example.twentyfiveframes.domain.movie.entity;
 
 import com.example.twentyfiveframes.domain.common.BaseEntity;
 import com.example.twentyfiveframes.domain.movie.dto.MovieRequestDto;
+import com.example.twentyfiveframes.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ public class Movie extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //  User 엔티티와 연관 관계
+    // todo: User 엔티티와 연관 관계
     private Long userId;
 
     @Column(nullable = false, length = 30)
@@ -48,8 +49,8 @@ public class Movie extends BaseEntity {
     @Column(nullable = false)
     private Long totalViews = 0L;
 
-    public Movie(MovieRequestDto.Create dto) {
-//        this.userId = userId; todo 로그인 유저 추가
+    public Movie(User user, MovieRequestDto.Create dto) {
+        this.userId = user.getId();
         this.title = dto.getTitle();
         this.summary = dto.getSummary();
         this.director = dto.getDirector();

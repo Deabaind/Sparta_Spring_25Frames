@@ -3,6 +3,8 @@ package com.example.twentyfiveframes.domain.movie.controller;
 import com.example.twentyfiveframes.domain.movie.dto.MovieRequestDto;
 import com.example.twentyfiveframes.domain.movie.dto.MovieResponseDto;
 import com.example.twentyfiveframes.domain.movie.service.MovieService;
+import com.example.twentyfiveframes.domain.user.entity.User;
+import com.example.twentyfiveframes.domain.user.entity.UserType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +22,11 @@ public class MovieController {
 
     // 영화 등록
     @PostMapping
-    public ResponseEntity<MovieResponseDto.create> saveMovie(@RequestBody MovieRequestDto.Create dto) { //todo 로그인 유저 정보 받기
-        MovieResponseDto.create response = movieService.saveMovie(dto);
+    public ResponseEntity<MovieResponseDto.create> saveMovie(@RequestBody MovieRequestDto.Create dto) {
+        //todo 임시로 로그인 유저로 사용하는 객체, JWT 구현 후 반드시 제거
+        User fakeUser = new User("provider@email.com", "TEST1234", "테스트", UserType.ROLE_PROVIDER);
+
+        MovieResponseDto.create response = movieService.saveMovie(fakeUser, dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
