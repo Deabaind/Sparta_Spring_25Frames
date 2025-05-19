@@ -1,23 +1,30 @@
 package com.example.twentyfiveframes.security;
 
 import com.example.twentyfiveframes.domain.user.entity.User;
-import com.example.twentyfiveframes.domain.user.entity.UserType;
+import com.example.twentyfiveframes.domain.user.service.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.net.http.HttpRequest;
 import java.security.Key;
 import java.util.Date;
 
+@Getter
+@Service
 public class JwtService {
+
+    private final UserService userService;
+
+    public JwtService(UserService userService) {
+        this.userService = userService;
+    }
 
     @Value("${jwt.secretKey}")
     private String secretKeyString;
@@ -54,6 +61,42 @@ public class JwtService {
     // RefreshToken 생성
     public String createRefreshToken(Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user = userDetails.getUser();
+
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + refreshTokenValidMillionSecond);
+
+        return Jwts.builder()
+                .setSubject(user.getId().toString())
+                .claim("tokenType", "refresh")
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(secretKey, SignatureAlgorithm.ES512)
+                .compact();
+    }
+
+    // accessToken 재발급
+    public String createAccessToken(String token) {
+        CustomUserDetails userDetails = getUserDetails(token);
+
+        User user = userDetails.getUser();
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + accessTokenValidMillionSecond);
+
+        return Jwts.builder()
+                .setSubject(user.getId().toString())
+                .claim("tokenType", "access")
+                .claim("email", user.getEmail())
+                .claim("role", user.getRole())
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(secretKey, SignatureAlgorithm.ES512)
+                .compact();
+    }
+
+    // refreshToken 재발급
+    public String createRefreshToken(String token) {
+        CustomUserDetails userDetails = getUserDetails(token);
         User user = userDetails.getUser();
 
         Date now = new Date();
@@ -111,6 +154,15 @@ public class JwtService {
         }
     }
 
-
-
+    // token에서 user 꺼내기
+    public CustomUserDetails getUserDetails(String token) {
+        String userId = Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJwt(token)
+                .getBody()
+                .getSubject();
+        User user = userService.getUserByUserId(Long.valueOf(userId));
+        return new CustomUserDetails(user);
+    }
 }

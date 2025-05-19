@@ -8,6 +8,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -27,18 +30,37 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (StringUtils.hasText(accessToken) && jwtService.validateAccessToken(accessToken)) {
             log.info("accessToken 인증 성공");
-            setAuthentication(accessToken, response);
+
+            setAuthentication(accessToken, request);
         } else if (StringUtils.hasText(refreshToken) && jwtService.validateToken(refreshToken)) {
             log.info("refreshToken 인증 성공 및 accessToken 재발급");
-            // todo 코드 수정
-            String newAccessToken = "토큰 재발급 코드";
 
-            setAuthentication(newAccessToken, response);
+            String newAccessToken = reissueToken(refreshToken, response);
+
+            setAuthentication(newAccessToken, request);
         }
         filterChain.doFilter(request, response);
     }
 
-    private void setAuthentication(String token, HttpServletResponse response) {
-        CustomUserDetails userDetails = jwtService.
+    // 인증 객체 재등록
+    private void setAuthentication(String token, HttpServletRequest request) {
+        CustomUserDetails userDetails = jwtService.getUserDetails(token);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails.getUser().getId(), null, userDetails.getAuthorities());
+
+        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+    }
+
+    // 토큰 재발급
+    private String reissueToken(String refreshToken, HttpServletResponse response){
+
+        String newAccessToken = jwtService.createAccessToken(refreshToken);
+        String newRefreshToken = jwtService.createRefreshToken(refreshToken);
+
+        response.setHeader("Authorization", newAccessToken);
+        response.setHeader("Authorization-refresh", "Bearer" + newRefreshToken);
+
+        return newAccessToken;
     }
 }

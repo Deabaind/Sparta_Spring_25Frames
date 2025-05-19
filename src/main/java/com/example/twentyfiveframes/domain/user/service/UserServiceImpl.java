@@ -1,6 +1,6 @@
 package com.example.twentyfiveframes.domain.user.service;
 
-import com.example.twentyfiveframes.domain.auth.dto.AuthRequestDto;
+import com.example.twentyfiveframes.domain.user.dto.UserRequestDto;
 import com.example.twentyfiveframes.domain.user.dto.UserResponseDto;
 import com.example.twentyfiveframes.domain.user.entity.User;
 import com.example.twentyfiveframes.domain.user.repository.UserRepository;
@@ -32,13 +32,13 @@ public class UserServiceImpl implements UserService {
 
     // user 생성
     @Override
-    public UserResponseDto.Signup save(AuthRequestDto.Signup signupDto) {
+    public UserResponseDto.Signup save(UserRequestDto.Signup signupDto) {
         User user = userRepository.save(new User(
                 signupDto.getEmail(),
                 signupDto.getPassword(),
                 signupDto.getUsername(),
                 signupDto.getRole()));
-        return new UserResponseDto.Signup(user.getId());
+        return new UserResponseDto.Signup("25Frames에 오신 걸 환영합니다", user.getId());
     }
 
     // user 조회

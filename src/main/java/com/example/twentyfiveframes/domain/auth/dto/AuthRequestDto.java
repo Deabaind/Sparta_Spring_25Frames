@@ -11,40 +11,36 @@ import lombok.RequiredArgsConstructor;
 public class AuthRequestDto {
 
     @Getter
+    @RequiredArgsConstructor
     public static class Signup {
 
         @Email(message = "올바른 이메일 형식이 아닙니다.")
         @NotBlank(message = "이메일는 필수 입력 항목입니다.")
-        private String email;
+        private final String email;
 
         @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)[a-zA-Z0-9]{8,20}$",
                 message = "비밀번호는 8~20자 사이의 영문자와 숫자만 사용하며, 대문자와 숫자를 각각 1개 이상 포함해야 합니다.")
         @NotBlank(message = "비밀번호는 필수 입력 항목입니다.")
-        private String password;
+        private final String password;
 
         @Size(max = 20, message = "20자 이하로 입력할 수 있습니다.")
         @NotBlank(message = "이름은 필수 입력 항목입니다.")
-        private String username;
+        private final String username;
 
         @Size(max = 20)
         @NotBlank(message = "사용자 타입은 필수 입력 항목입니다.")
-        private UserType role;
-
-        public Signup(String email, String password, String username, UserType role) {
-            this.email = email;
-            this.password = password;
-            this.username = username;
-            this.role = role;
-        }
+        private final UserType role;
     }
 
     @Getter
+    @RequiredArgsConstructor
     public static class Login {
+
         @Email(message = "올바른 이메일 형식이 아닙니다.")
         @NotBlank(message = "이메일는 필수 입력 항목입니다.")
-        private String email;
+        private final String email;
 
         @NotBlank(message = "비밀번호는 필수 입력 항목입니다.")
-        private String password;
+        private final String password;
     }
 }
