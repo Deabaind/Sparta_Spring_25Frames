@@ -20,15 +20,22 @@ public class MovieResponseDto {
         private final String title;
         private final String summary;
         private final String genre;
-//        private final Long averageScore; todo 추가하기
+        private final Double averageScore;
 
         public static GetAll from(Movie movie) {
+            Double averageRating = movie.getAverageRating();
+            Double rounded = null;
+
+            if(averageRating != null) {
+                rounded = Math.round(averageRating * 10) / 10.0;
+            }
+
             return new GetAll(
                     movie.getId(),
                     movie.getTitle(),
                     movie.getSummary(),
-                    movie.getGenre().toString()
-//                    averageScore = 1
+                    movie.getGenre().toString(),
+                    rounded
             );
         }
     }
