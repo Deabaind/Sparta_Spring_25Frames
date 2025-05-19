@@ -7,7 +7,10 @@ import com.example.twentyfiveframes.domain.user.entity.User;
 public interface UserService {
 
     // id로 user 객체 조회
-    User getUser(Long userId);
+    User getUserByUserId(Long userId);
+
+    // eamil로 user 객체 조회
+    User getUserByEmail(String email);
 
     // user 생성
     UserResponseDto.Signup save(AuthRequestDto.Signup signupDto);

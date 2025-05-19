@@ -16,9 +16,18 @@ public class UserServiceImpl implements UserService {
 
     // id로 user 객체 조회
     @Override
-    public User getUser(Long userId) {
+    public User getUserByUserId(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 유저입니다."));
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        try {
+            return userRepository.findByEmail(email);
+        } catch (EntityNotFoundException e) {
+            throw new EntityNotFoundException("잘못된 이메일 또는 비밀번호입니다.");
+        }
     }
 
     // user 생성
@@ -35,7 +44,7 @@ public class UserServiceImpl implements UserService {
     // user 조회
     @Override
     public UserResponseDto.Get get(Long userId) {
-        User user = getUser(userId);
+        User user = getUserByUserId(userId);
         return new UserResponseDto.Get(
                 user.getId(),
                 user.getEmail(),
