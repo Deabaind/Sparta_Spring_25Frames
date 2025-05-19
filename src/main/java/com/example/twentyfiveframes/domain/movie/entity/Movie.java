@@ -4,6 +4,8 @@ import com.example.twentyfiveframes.domain.common.BaseEntity;
 import com.example.twentyfiveframes.domain.movie.dto.MovieRequestDto;
 import com.example.twentyfiveframes.domain.user.entity.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +13,8 @@ import java.time.LocalDate;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class Movie extends BaseEntity {
 
@@ -42,7 +46,7 @@ public class Movie extends BaseEntity {
     @Column(nullable = false)
     private LocalDate releaseDate;
 
-    private Double averageRating;
+    private Double averageRating; //todo 리뷰를 활용해 평균평점 계산하기, 리뷰 repository 추가 후 반영
 
     @Column(nullable = false)
     private Long totalViews = 0L;
