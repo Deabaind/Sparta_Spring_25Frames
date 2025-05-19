@@ -30,8 +30,7 @@ public class Movie extends BaseEntity {
     @Column(nullable = false, length = 30)
     private String director;
 
-    @Column(nullable = false)
-    private Integer ageLimit; // 예: 12, 15, 19
+    private Integer ageLimit; // 시청 연령 제한 (예: 12, 15, 19), 시청 연령 제한도 없을 수 있으니 nullable을 true로 변경했습니다.
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -43,8 +42,7 @@ public class Movie extends BaseEntity {
     @Column(nullable = false)
     private LocalDate releaseDate;
 
-    @Column(nullable = false)
-    private Double averageRating = -1.0; // 평점이 없을 경우 -1 반환
+    private Double averageRating;
 
     @Column(nullable = false)
     private Long totalViews = 0L;
