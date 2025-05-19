@@ -1,6 +1,8 @@
 package com.example.twentyfiveframes.domain.movie.entity;
 
 import com.example.twentyfiveframes.domain.common.BaseEntity;
+import com.example.twentyfiveframes.domain.movie.dto.MovieRequestDto;
+import com.example.twentyfiveframes.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +18,7 @@ public class Movie extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //  User 엔티티와 연관 관계
+    // todo: User 엔티티와 연관 관계
     private Long userId;
 
     @Column(nullable = false, length = 30)
@@ -28,22 +30,32 @@ public class Movie extends BaseEntity {
     @Column(nullable = false, length = 30)
     private String director;
 
-    @Column(nullable = false)
-    private int ageLimit; // 예: 12, 15, 19
+    private Integer ageLimit; // 시청 연령 제한 (예: 12, 15, 19), 시청 연령 제한도 없을 수 있으니 nullable을 true로 변경했습니다.
 
-    //@Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private String genre; // enum 생성 후 변경
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private MovieGenre genre;
 
     @Column(nullable = false)
-    private int runningTime; // 단위: 분
+    private Integer runningTime; // 단위: 분
 
     @Column(nullable = false)
     private LocalDate releaseDate;
 
-    @Column
     private Double averageRating;
 
     @Column(nullable = false)
-    private Long totalViews;
+    private Long totalViews = 0L;
+
+    public Movie(User user, MovieRequestDto.Save dto) {
+        this.userId = user.getId();
+        this.title = dto.getTitle();
+        this.summary = dto.getSummary();
+        this.director = dto.getDirector();
+        this.ageLimit = dto.getAgeLimit();
+        this.genre = dto.getGenre();
+        this.runningTime = dto.getRunningTime();
+        this.releaseDate = dto.getReleaseDate();
+    }
+
 }
