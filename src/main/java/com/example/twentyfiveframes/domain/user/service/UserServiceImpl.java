@@ -22,4 +22,9 @@ public class UserServiceImpl implements UserService {
                 signupDto.getRole()));
         return new UserResponseDto.Signup(user.getId());
     }
+
+    // user 수정 로직
+    public void update() {
+
+    }
 }
