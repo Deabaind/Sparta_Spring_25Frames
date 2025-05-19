@@ -42,7 +42,6 @@ public class Movie extends BaseEntity {
     @Column(nullable = false)
     private LocalDate releaseDate;
 
-    //todo review 엔티티와 연관관계
     private Double averageRating;
 
     @Column(nullable = false)
