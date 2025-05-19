@@ -42,6 +42,11 @@ public class MovieController {
     }
 
     // 영화 단건 조회
+    @GetMapping
+    public ResponseEntity<MovieResponseDto.Get> getMovie() {
+
+        return ResponseEntity.status(HttpStatus.OK).body();
+    }
 
     // 영화 수정
 
