@@ -49,6 +49,8 @@ public class MovieServiceImpl implements MovieService{
     public MovieResponseDto.Get getMovie(Long movieId) {
         Movie movie = getMovieById(movieId);
 
+        //todo 리뷰 조회, 리뷰 dto 변환, 아래 return 코드에서 함께 반환
+
         return MovieResponseDto.Get.from(movie);
     }
     
