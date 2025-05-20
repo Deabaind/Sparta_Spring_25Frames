@@ -62,4 +62,13 @@ public class Movie extends BaseEntity {
         this.releaseDate = dto.getReleaseDate();
     }
 
+    public void update(MovieRequestDto.Update dto) {
+        if (dto.getTitle() != null) this.title = dto.getTitle();
+        if (dto.getSummary() != null) this.summary = dto.getSummary();
+        if (dto.getDirector() != null) this.director = dto.getTitle();
+        if (dto.getAgeLimit() != null) this.ageLimit = dto.getAgeLimit();
+        if (dto.getGenre() != null) this.genre = dto.getGenre();
+        if (dto.getRunningTime() != null) this.runningTime = dto.getRunningTime();
+    }
+
 }

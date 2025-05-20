@@ -53,8 +53,13 @@ public class MovieServiceImpl implements MovieService{
 
         return MovieResponseDto.Get.from(movie);
     }
-    
+
     // 영화 수정
+    @Override
+    public void updateMovie(Long movieId, MovieRequestDto.Update dto) {
+        Movie movie = getMovieById(movieId);
+        movie.update(dto);
+    }
 
     // 영화 삭제
 
