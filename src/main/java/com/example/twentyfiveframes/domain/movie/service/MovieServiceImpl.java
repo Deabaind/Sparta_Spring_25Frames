@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 
 
 @Service
@@ -18,6 +19,13 @@ import org.springframework.stereotype.Service;
 public class MovieServiceImpl implements MovieService{
 
     private final MovieRepository movieRepository;
+
+    // movieId로 Movie 조회
+    @Override
+    public Movie getMovieById(Long movieId) {
+        return movieRepository.findById(movieId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 영화입니다."));
+    }
 
     // 영화 등록
     @Override
@@ -35,10 +43,19 @@ public class MovieServiceImpl implements MovieService{
         return movieRepository.findAll(pageable)
                 .map(MovieResponseDto.GetAll::from);
     }
-
+    
     // 영화 단건 조회
+    @Override
+    public MovieResponseDto.Get getMovie(Long movieId) {
+        Movie movie = getMovieById(movieId);
 
+        //todo 리뷰 조회, 리뷰 dto 변환, 아래 return 코드에서 함께 반환
+
+        return MovieResponseDto.Get.from(movie);
+    }
+    
     // 영화 수정
 
     // 영화 삭제
+
 }
