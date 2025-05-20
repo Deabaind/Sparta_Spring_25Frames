@@ -127,7 +127,6 @@ public class MovieServiceImplTest {
         assertThat(result.getSummary()).isEqualTo("해리포터 요약");
         assertThat(result.getGenre()).isEqualTo("FANTASY");
         assertThat(result.getReleaseDate()).isEqualTo("2020-01-01");
-
     }
 
 }
