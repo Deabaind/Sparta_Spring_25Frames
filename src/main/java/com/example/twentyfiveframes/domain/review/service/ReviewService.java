@@ -1,10 +1,12 @@
 package com.example.twentyfiveframes.domain.review.service;
 
+import com.example.twentyfiveframes.domain.movie.dto.MovieDetailResponseDto;
 import com.example.twentyfiveframes.domain.movie.entity.Movie;
 import com.example.twentyfiveframes.domain.movie.repository.MovieRepository;
 import com.example.twentyfiveframes.domain.review.dto.ReviewRequestDto;
 import com.example.twentyfiveframes.domain.review.dto.ReviewResponseDto;
 import com.example.twentyfiveframes.domain.review.dto.ReviewUpdateRequestDto;
+import com.example.twentyfiveframes.domain.review.dto.ReviewWithLikeDto;
 import com.example.twentyfiveframes.domain.review.entity.Review;
 import com.example.twentyfiveframes.domain.review.repository.ReviewRepository;
 import com.example.twentyfiveframes.domain.reviewLike.dto.ReviewLikeCountDto;
@@ -94,4 +96,42 @@ public class ReviewService {
         return new ReviewLikeCountDto(reviewId, count);
     }
 
+    //영화 상세 조회 시 리뷰, 좋아요 확인
+    public MovieDetailResponseDto getMovieDetail(Long movieId) {
+        Movie movie = movieRepository.findById(movieId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 영화입니다."));
+
+        List<Review> reviews = reviewRepository.findAllByMovieId(movieId);
+
+        List<ReviewWithLikeDto> reviewDtos = reviews.stream()
+                .map(review -> new ReviewWithLikeDto(
+                        review.getId(),
+                        review.getUser().getId(),
+                        review.getUser().getUsername(),
+                        review.getRating(),
+                        review.getContent(),
+                        reviewLikeRepository.countByReviewId(review.getId())
+                )).toList();
+
+        return new MovieDetailResponseDto(
+                movie.getId(),
+                movie.getTitle(),
+                movie.getGenre(),
+                movie.getDirector(),
+                reviewDtos
+        );
+    }
+    @Transactional(readOnly = true)
+    public List<ReviewResponseDto> getAllReviews() {
+        return reviewRepository.findAll().stream()
+                .map(review -> new ReviewResponseDto(
+                        review.getId(),
+                        review.getUser().getId(),
+                        review.getUser().getUsername(),
+                        review.getMovie().getId(),
+                        review.getRating(),
+                        review.getContent()
+                ))
+                .collect(Collectors.toList());
+    }
 }

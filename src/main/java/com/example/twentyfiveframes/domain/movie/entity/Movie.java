@@ -4,10 +4,7 @@ import com.example.twentyfiveframes.domain.common.BaseEntity;
 import com.example.twentyfiveframes.domain.movie.dto.MovieRequestDto;
 import com.example.twentyfiveframes.domain.user.entity.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -16,6 +13,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
 public class Movie extends BaseEntity {
 
     @Id
@@ -50,6 +48,8 @@ public class Movie extends BaseEntity {
 
     @Column(nullable = false)
     private Long totalViews = 0L;
+
+
 
     public Movie(User user, MovieRequestDto.Save dto) {
         this.userId = user.getId();

@@ -17,5 +17,6 @@ public enum MovieGenre {
     ETC("ETC");
 
     private final String genre;
+    
 
 }
