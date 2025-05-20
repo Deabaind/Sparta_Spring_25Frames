@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
 public class Movie extends BaseEntity {
 
     @Id

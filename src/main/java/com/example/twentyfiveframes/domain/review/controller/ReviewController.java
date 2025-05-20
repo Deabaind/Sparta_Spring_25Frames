@@ -59,10 +59,5 @@ public class ReviewController {
         return ResponseEntity.ok().build();
     }
 
-    // 6. 리뷰 좋아요 수 조회
-    @GetMapping("/{reviewId}/like/count")
-    public ResponseEntity<ReviewLikeCountDto> getLikeCount(@PathVariable Long reviewId) {
-        ReviewLikeCountDto dto = reviewService.getReviewLikeCount(reviewId);
-        return ResponseEntity.ok(dto);
-    }
+
 }

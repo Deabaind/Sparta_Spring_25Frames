@@ -26,6 +26,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.time.LocalDate;
@@ -48,35 +49,36 @@ public class ReviewServiceTest {
 
     @BeforeEach
     void setup() {
-        reviewLikeRepository.deleteAll(); // 리뷰 좋아요 초기화
-        reviewRepository.deleteAll();     // 리뷰 초기화
-        movieRepository.deleteAll();      // 영화 초기화
-        userRepository.deleteAll();      // 유저 초기화
+        reviewLikeRepository.deleteAll();
+        reviewRepository.deleteAll();
+        movieRepository.deleteAll();
+        userRepository.deleteAll();
 
-        if (!userRepository.existsByEmail("test@test.com")) {
-            user = userRepository.save(new User(
-                    "test@test.com",
-                    "1234",
-                    "test",
-                    UserType.ROLE_USER
-            ));
-        } else {
-            user = userRepository.findByEmail("test@test.com");
-        }
+        user = new User("test@test.com", "1234", "test", UserType.ROLE_USER);
+        injectId(user, 1L);
+        user = userRepository.save(user);
 
         MovieRequestDto.Save movieDto = new MovieRequestDto.Save(
-                "테스트 영화",         // title
-                "즐거리",             // summary
-                "감독",               // director
-                15,                   // ageLimit
-                MovieGenre.ACTION,    // genre
-                120,                  // runningTime
-                LocalDate.of(2023, 10, 10) // releaseDate
+                "테스트 영화",
+                "즐거리",
+                "감독",
+                15,
+                MovieGenre.ACTION,
+                120,
+                LocalDate.of(2023, 10, 10)
         );
 
         movie = new Movie(user, movieDto);
         movie = movieRepository.save(movie);
     }
+    private void injectId(Object target, Long idValue) {
+        Field field = ReflectionUtils.findField(target.getClass(), "id");
+        if (field != null) {
+            field.setAccessible(true);
+            ReflectionUtils.setField(field, target, idValue);
+        }
+    }
+
     @Test
     void 리뷰_등록() {
         ReviewRequestDto request = new ReviewRequestDto(movie.getId(), 5, "재밌어요");
