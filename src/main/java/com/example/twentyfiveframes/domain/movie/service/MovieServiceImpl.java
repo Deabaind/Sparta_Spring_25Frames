@@ -62,5 +62,10 @@ public class MovieServiceImpl implements MovieService{
     }
 
     // 영화 삭제
+    @Override
+    public void deleteMove(Long movieId) {
+        Movie movie = getMovieById(movieId);
+        movie.softDelete();
+    }
 
 }

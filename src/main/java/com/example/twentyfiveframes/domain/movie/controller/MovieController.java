@@ -59,5 +59,11 @@ public class MovieController {
     }
 
     // 영화 삭제
+    @DeleteMapping("/{movieId}")
+    public ResponseEntity<String> deleteMovie(@PathVariable Long movieId) {
+        movieService.deleteMove(movieId);
+
+        return ResponseEntity.status(HttpStatus.OK).body("등록된 영화가 삭제되었습니다.");
+    }
 
 }
