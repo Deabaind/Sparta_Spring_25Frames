@@ -21,6 +21,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -102,6 +103,30 @@ public class MovieServiceImplTest {
         assertThat(result.getContent().get(1).getGenre()).isEqualTo("SF");
         assertThat(result.getContent().get(2).getMovieId()).isEqualTo(3L);
         //todo averageScore 연동 후 검증 코드 추가하기
+    }
+
+    @Test
+    @DisplayName("영화 단건 조회")
+    void getMovie() {
+        // given
+        Movie movie = Movie.builder()
+                .title("해리포터")
+                .summary("해리포터 요약")
+                .genre(MovieGenre.FANTASY)
+                .releaseDate(LocalDate.of(2020,1,1))
+                .build();
+        ReflectionTestUtils.setField(movie, "id", 1L);
+
+        given(movieRepository.findById(1L)).willReturn(Optional.of(movie));
+
+        // when
+        MovieResponseDto.Get result = movieService.getMovie(1L);
+
+        // then
+        assertThat(result.getTitle()).isEqualTo("해리포터");
+        assertThat(result.getSummary()).isEqualTo("해리포터 요약");
+        assertThat(result.getGenre()).isEqualTo("FANTASY");
+        assertThat(result.getReleaseDate()).isEqualTo("2020-01-01");
 
     }
 
