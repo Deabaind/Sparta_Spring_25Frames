@@ -8,7 +8,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
@@ -18,7 +17,6 @@ public class MovieRequestDto {
     // 영화 등록
     @Getter
     @AllArgsConstructor
-    @NoArgsConstructor
     public static class Save {
 
         @NotBlank(message = "영화 제목은 필수 입력 항목입니다.")
@@ -50,7 +48,6 @@ public class MovieRequestDto {
     // 영화 수정
     @Getter
     @AllArgsConstructor
-    @NoArgsConstructor
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Update {
 
