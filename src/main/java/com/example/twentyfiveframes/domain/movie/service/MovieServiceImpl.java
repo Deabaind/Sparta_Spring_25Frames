@@ -6,12 +6,9 @@ import com.example.twentyfiveframes.domain.movie.entity.Movie;
 import com.example.twentyfiveframes.domain.movie.repository.MovieRepository;
 import com.example.twentyfiveframes.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 
 @Service
