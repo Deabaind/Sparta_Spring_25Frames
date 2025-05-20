@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 public class ReviewService {
+    private static final String MOVIE_RANKING_KEY = "movieRanking";
     private final ReviewRepository reviewRepository;
     private final ReviewLikeRepository reviewLikeRepository;
     private final MovieRepository movieRepository;

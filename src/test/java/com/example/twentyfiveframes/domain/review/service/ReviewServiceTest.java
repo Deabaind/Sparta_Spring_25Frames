@@ -1,6 +1,7 @@
 package com.example.twentyfiveframes.domain.review.service;
 
 
+import com.example.twentyfiveframes.domain.movie.dto.MovieRequestDto;
 import com.example.twentyfiveframes.domain.movie.entity.Movie;
 import com.example.twentyfiveframes.domain.movie.entity.MovieGenre;
 import com.example.twentyfiveframes.domain.movie.repository.MovieRepository;
@@ -11,6 +12,7 @@ import com.example.twentyfiveframes.domain.review.dto.ReviewUpdateRequestDto;
 import com.example.twentyfiveframes.domain.review.entity.Review;
 import com.example.twentyfiveframes.domain.review.repository.ReviewRepository;
 import com.example.twentyfiveframes.domain.reviewLike.dto.ReviewLikeCountDto;
+import com.example.twentyfiveframes.domain.reviewLike.repository.ReviewLikeRepository;
 import com.example.twentyfiveframes.domain.user.entity.User;
 import com.example.twentyfiveframes.domain.user.entity.UserType;
 import com.example.twentyfiveframes.domain.user.repository.UserRepository;
@@ -39,48 +41,40 @@ public class ReviewServiceTest {
     @Autowired private UserRepository userRepository;
     @Autowired private MovieRepository movieRepository;
     @Autowired private ReviewRepository reviewRepository;
+    @Autowired private ReviewLikeRepository reviewLikeRepository;
 
     private User user;
     private Movie movie;
 
     @BeforeEach
     void setup() {
-        reviewRepository.deleteAll(); // 리뷰 초기화
-        movieRepository.deleteAll();  // 영화 초기화
-        userRepository.deleteAll();   // 유저 초기화
+        reviewLikeRepository.deleteAll(); // 리뷰 좋아요 초기화
+        reviewRepository.deleteAll();     // 리뷰 초기화
+        movieRepository.deleteAll();      // 영화 초기화
+        userRepository.deleteAll();      // 유저 초기화
 
-        Optional<User> existing = userRepository.findByEmail("test@test.com");
-
-        if (existing.isPresent()) {
-            user = existing.get(); // 기존 사용자 사용
+        if (!userRepository.existsByEmail("test@test.com")) {
+            user = userRepository.save(new User(
+                    "test@test.com",
+                    "1234",
+                    "test",
+                    UserType.ROLE_USER
+            ));
         } else {
-            user = new User();
-            user.setEmail("test@test.com");
-            user.setPassword("1234");
-            user.setUsername("test");
-            user.setRole(UserType.ROLE_USER);
-            user = userRepository.save(user);
+            user = userRepository.findByEmail("test@test.com");
         }
 
-        movie = new Movie();
-        movie.setTitle("테스트 영화");
-        movie.setSummary("즐거리");
-        movie.setDirector("감독");
-        movie.setReleaseDate(LocalDate.of(2023, 10, 10));
-        movie.setRunningTime(120);
-        movie.setGenre(MovieGenre.ACTION);
-        movie.setAgeLimit(15);
-        movie.setTotalViews(0L);
-        movie.setAverageRating(0.0);
+        MovieRequestDto.Save movieDto = new MovieRequestDto.Save(
+                "테스트 영화",         // title
+                "즐거리",             // summary
+                "감독",               // director
+                15,                   // ageLimit
+                MovieGenre.ACTION,    // genre
+                120,                  // runningTime
+                LocalDate.of(2023, 10, 10) // releaseDate
+        );
 
-        try {
-            Field userIdField = Movie.class.getDeclaredField("userId");
-            userIdField.setAccessible(true);
-            userIdField.set(movie, user.getId());
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException("userId 필드 주입 중 오류 발생", e);
-        }
-
+        movie = new Movie(user, movieDto);
         movie = movieRepository.save(movie);
     }
     @Test
