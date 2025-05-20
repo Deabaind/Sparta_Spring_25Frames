@@ -4,10 +4,12 @@ import com.example.twentyfiveframes.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@Setter
 public class User extends BaseEntity {
 
     @Id
