@@ -51,4 +51,14 @@ public class AuthServiceImpl implements AuthService {
 
         return new AuthResponseDto.Login(accessToken, "Bearer " + refreshToken);
     }
+
+    // 로그아웃
+
+    // 탈퇴
+    @Override
+    public void delete(Long userId, AuthRequestDto.CheckPw dto) {
+
+    }
+
+
 }

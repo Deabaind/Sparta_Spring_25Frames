@@ -11,4 +11,7 @@ public interface AuthService {
 
     // 로그인
     AuthResponseDto.Login login(AuthRequestDto.Login loginRequest);
+
+    // 탈퇴
+    void delete(Long userId, AuthRequestDto.CheckPw dto);
 }
