@@ -7,9 +7,14 @@ import com.example.twentyfiveframes.domain.movie.entity.Movie;
 import com.example.twentyfiveframes.domain.movie.repository.MovieRepository;
 import com.example.twentyfiveframes.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+
 
 @Service
 @RequiredArgsConstructor
@@ -27,11 +32,17 @@ public class MovieServiceImpl implements MovieService{
         return new MovieResponseDto.Save("영화가 등록되었습니다.", movie.getId());
     }
 
-    // 영화 수정
-
     // 영화 전체 조회
+    @Override
+    public Page<MovieResponseDto.GetAll> getAllMovies(Pageable pageable) {
+
+        return movieRepository.findAll(pageable)
+                .map(MovieResponseDto.GetAll::from);
+    }
 
     // 영화 단건 조회
+
+    // 영화 수정
 
     // 영화 삭제
 
@@ -49,7 +60,7 @@ public class MovieServiceImpl implements MovieService{
 
     @Override
     public List<String> topKeywords(int limit) {
-        return keywordCounter.getTopKeywords(limit);
+        return keywordCounter.topKeywords(limit);
     }
 
     // 인기 검색어 조회

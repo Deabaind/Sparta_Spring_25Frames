@@ -19,7 +19,7 @@ public class KeywordCounter {
                 .incrementAndGet();
     }
 
-    public List<String> getTopKeywords(int limit) {
+    public List<String> topKeywords(int limit) {
         return keywordCount.entrySet().stream()
                 .sorted((e1, e2) -> Integer.compare(e2.getValue().get(), e1.getValue().get()))
                 .limit(limit)
