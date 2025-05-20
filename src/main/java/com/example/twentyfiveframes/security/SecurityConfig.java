@@ -3,6 +3,7 @@ package com.example.twentyfiveframes.security;
 import com.example.twentyfiveframes.filter.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -50,6 +51,13 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/signup", "/login").permitAll()
+                        .requestMatchers(HttpMethod.GET,
+                                "/movies",
+                                "/movies/{movieId}",
+                                "/movies?genre={String}&title={title}",
+                                "/movies/popular",
+                                "/movies/ranking"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
