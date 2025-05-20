@@ -1,8 +1,12 @@
 package com.example.twentyfiveframes.domain.movie.dto;
 
 import com.example.twentyfiveframes.domain.movie.entity.Movie;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class MovieResponseDto {
 
@@ -20,7 +24,7 @@ public class MovieResponseDto {
         private final String title;
         private final String summary;
         private final String genre;
-        private final Double averageScore;
+        private final Double averageRating;
 
         public static GetAll from(Movie movie) {
             Double averageRating = movie.getAverageRating();
@@ -36,6 +40,42 @@ public class MovieResponseDto {
                     movie.getSummary(),
                     movie.getGenre().toString(),
                     rounded
+            );
+        }
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    public static class Get {
+        private final Long movieId;
+        private final String title;
+        private final String summary;
+        private final String director;
+        private final Integer ageLimit;
+        private final String genre;
+        private final Integer runningTime;
+        private final LocalDate releaseDate;
+        private final Double averageRating;
+        //todo: review list 반환
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        private final LocalDateTime createdAt;
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        private final LocalDateTime updatedAt;
+
+        public static Get from(Movie movie) {
+            return new Get(
+                    movie.getId(),
+                    movie.getTitle(),
+                    movie.getSummary(),
+                    movie.getDirector(),
+                    movie.getAgeLimit(),
+                    movie.getGenre().toString(),
+                    movie.getRunningTime(),
+                    movie.getReleaseDate(),
+                    movie.getAverageRating(),
+                    //todo 리뷰list
+                    movie.getCreatedAt(),
+                    movie.getUpdatedAt()
             );
         }
     }

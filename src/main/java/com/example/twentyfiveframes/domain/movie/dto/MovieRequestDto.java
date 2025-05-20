@@ -1,11 +1,13 @@
 package com.example.twentyfiveframes.domain.movie.dto;
 
 import com.example.twentyfiveframes.domain.movie.entity.MovieGenre;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -16,6 +18,7 @@ public class MovieRequestDto {
     // 영화 등록
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Save {
 
         @NotBlank(message = "영화 제목은 필수 입력 항목입니다.")
@@ -32,14 +35,14 @@ public class MovieRequestDto {
         @NotNull(message = "관람 제한 연령은 필수 입력 항목입니다.")
         private Integer ageLimit; //0,12,15,18 연령제한
 
-        @NotBlank(message = "영화 장르는 필수 입력 항목입니다.")
+        @NotNull(message = "영화 장르는 필수 입력 항목입니다.")
         private MovieGenre genre; //이넘으로 변경
 
-        @NotBlank(message = "영화 장르는 필수 입력 항목입니다.")
+        @NotNull(message = "관람시간은 필수 입력 항목입니다.")
         private Integer runningTime;
 
         @NotNull(message = "영화 개봉일은 필수 입력 항목입니다.")
-        @DateTimeFormat(pattern = "yyyy-MM-dd")
+        @JsonFormat(pattern = "yyyy-MM-dd")
         private LocalDate releaseDate;
     }
 
