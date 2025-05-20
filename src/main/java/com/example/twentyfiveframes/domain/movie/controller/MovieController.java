@@ -42,10 +42,11 @@ public class MovieController {
     }
 
     // 영화 단건 조회
-    @GetMapping
-    public ResponseEntity<MovieResponseDto.Get> getMovie() {
+    @GetMapping("/{movieId}")
+    public ResponseEntity<MovieResponseDto.Get> getMovie(@PathVariable("movieId") Long movieId) {
+        MovieResponseDto.Get response = movieService.getMovie(movieId);
 
-        return ResponseEntity.status(HttpStatus.OK).body();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     // 영화 수정
