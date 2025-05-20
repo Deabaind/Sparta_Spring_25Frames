@@ -21,8 +21,7 @@ public class UserController {
 
     // 로그인 유저 정보 조회
     @GetMapping
-    public ResponseEntity<UserResponseDto.Get> findUser(@AuthenticationPrincipal CustomUserDetails user) {
-        User loginUser = user.getUser();
-        return ResponseEntity.status(HttpStatus.OK).body(userService.get(loginUser.getId()));
+    public ResponseEntity<UserResponseDto.Get> findUser(@AuthenticationPrincipal Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.get(userId));
     }
 }
