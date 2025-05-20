@@ -6,7 +6,9 @@ import com.example.twentyfiveframes.domain.user.dto.UserResponseDto;
 
 public interface AuthService {
 
+    // 회원 가입
     UserResponseDto.Signup signup(AuthRequestDto.Signup signupRequest) ;
 
+    // 로그인
     AuthResponseDto.Login login(AuthRequestDto.Login loginRequest);
 }

@@ -1,6 +1,5 @@
 package com.example.twentyfiveframes.domain.user.service;
 
-import com.example.twentyfiveframes.domain.auth.dto.AuthRequestDto;
 import com.example.twentyfiveframes.domain.user.dto.UserRequestDto;
 import com.example.twentyfiveframes.domain.user.dto.UserResponseDto;
 import com.example.twentyfiveframes.domain.user.entity.User;

@@ -37,7 +37,6 @@ public class AuthServiceImpl implements AuthService {
     // 로그인
     @Override
     public AuthResponseDto.Login login(AuthRequestDto.Login loginRequest) {
-        // 인증 객체 생성
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getEmail(),
@@ -45,10 +44,8 @@ public class AuthServiceImpl implements AuthService {
                 )
         );
 
-        // 인증 객체 등록
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // token 생성
         String accessToken = jwtService.createAccessToken(authentication);
         String refreshToken = jwtService.createRefreshToken(authentication);
 

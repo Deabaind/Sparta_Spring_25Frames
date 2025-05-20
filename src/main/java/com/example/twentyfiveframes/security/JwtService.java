@@ -54,7 +54,7 @@ public class JwtService {
                 .claim("role", user.getRole())
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .signWith(secretKey, SignatureAlgorithm.ES512)
+                .signWith(secretKey, SignatureAlgorithm.HS512)
                 .compact();
     }
 
@@ -71,7 +71,7 @@ public class JwtService {
                 .claim("tokenType", "refresh")
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .signWith(secretKey, SignatureAlgorithm.ES512)
+                .signWith(secretKey, SignatureAlgorithm.HS512)
                 .compact();
     }
 
@@ -90,7 +90,7 @@ public class JwtService {
                 .claim("role", user.getRole())
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .signWith(secretKey, SignatureAlgorithm.ES512)
+                .signWith(secretKey, SignatureAlgorithm.HS512)
                 .compact();
     }
 
@@ -107,7 +107,7 @@ public class JwtService {
                 .claim("tokenType", "refresh")
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .signWith(secretKey, SignatureAlgorithm.ES512)
+                .signWith(secretKey, SignatureAlgorithm.HS512)
                 .compact();
     }
 
@@ -159,7 +159,7 @@ public class JwtService {
         String userId = Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
-                .parseClaimsJwt(token)
+                .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
         User user = userService.getUserByUserId(Long.valueOf(userId));

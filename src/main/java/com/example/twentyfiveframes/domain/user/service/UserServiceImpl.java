@@ -33,6 +33,9 @@ public class UserServiceImpl implements UserService {
     // user 생성
     @Override
     public UserResponseDto.Signup save(UserRequestDto.Signup signupDto) {
+        if (userRepository.existsByEmail(signupDto.getEmail())) {
+            throw new IllegalArgumentException("이미 사용중인 이메일입니다.");
+        }
         User user = userRepository.save(new User(
                 signupDto.getEmail(),
                 signupDto.getPassword(),
