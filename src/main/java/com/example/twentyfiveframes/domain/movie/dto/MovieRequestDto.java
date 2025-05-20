@@ -2,13 +2,13 @@ package com.example.twentyfiveframes.domain.movie.dto;
 
 import com.example.twentyfiveframes.domain.movie.entity.MovieGenre;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -36,7 +36,7 @@ public class MovieRequestDto {
         private Integer ageLimit; //0,12,15,18 연령제한
 
         @NotNull(message = "영화 장르는 필수 입력 항목입니다.")
-        private MovieGenre genre; //이넘으로 변경
+        private MovieGenre genre;
 
         @NotNull(message = "관람시간은 필수 입력 항목입니다.")
         private Integer runningTime;
@@ -48,11 +48,27 @@ public class MovieRequestDto {
 
 
     // 영화 수정
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class Update {
 
-    // 영화 전체 조회
+        @Size(max = 30, message = "30자 이하로 입력할 수 있습니다.")
+        private String title;
 
-    // 영화 단건 조회
+        private String summary;
 
-    // 영화 삭제
+        @Size(max = 30, message = "30자 이하로 입력할 수 있습니다.")
+        private String director;
+
+        private Integer ageLimit; //0,12,15,18 연령제한
+
+        private MovieGenre genre;
+
+        private Integer runningTime;
+
+    }
+
 
 }
