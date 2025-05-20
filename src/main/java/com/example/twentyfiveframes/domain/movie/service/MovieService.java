@@ -15,4 +15,8 @@ public interface MovieService {
     Page<MovieResponseDto.GetAll> getAllMovies(Pageable pageable);
 
     MovieResponseDto.Get getMovie(Long movieId);
+
+    void updateMovie(Long movieId, MovieRequestDto.Update dto);
+
+    void deleteMove(Long movieId);
 }

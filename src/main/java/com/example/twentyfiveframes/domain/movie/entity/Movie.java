@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 import java.time.LocalDate;
 
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Where(clause = "deleted_at IS NULL")
 public class Movie extends BaseEntity {
 
     @Id
@@ -60,6 +62,15 @@ public class Movie extends BaseEntity {
         this.genre = dto.getGenre();
         this.runningTime = dto.getRunningTime();
         this.releaseDate = dto.getReleaseDate();
+    }
+
+    public void update(MovieRequestDto.Update dto) {
+        if (dto.getTitle() != null) this.title = dto.getTitle();
+        if (dto.getSummary() != null) this.summary = dto.getSummary();
+        if (dto.getDirector() != null) this.director = dto.getTitle();
+        if (dto.getAgeLimit() != null) this.ageLimit = dto.getAgeLimit();
+        if (dto.getGenre() != null) this.genre = dto.getGenre();
+        if (dto.getRunningTime() != null) this.runningTime = dto.getRunningTime();
     }
 
 }
