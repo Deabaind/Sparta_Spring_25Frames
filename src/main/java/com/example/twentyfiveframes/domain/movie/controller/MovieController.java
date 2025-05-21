@@ -3,8 +3,6 @@ package com.example.twentyfiveframes.domain.movie.controller;
 import com.example.twentyfiveframes.domain.movie.dto.MovieRequestDto;
 import com.example.twentyfiveframes.domain.movie.dto.MovieResponseDto;
 import com.example.twentyfiveframes.domain.movie.service.MovieService;
-import com.example.twentyfiveframes.domain.user.entity.User;
-import com.example.twentyfiveframes.domain.user.entity.UserType;
 import com.example.twentyfiveframes.domain.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 public class MovieController {
 
     private final MovieService movieService;
-    private final UserService userService;
 
     // 영화 등록
     @PostMapping
