@@ -5,6 +5,7 @@ import com.example.twentyfiveframes.domain.reviewLike.dto.ReviewLikeCountDto;
 import com.example.twentyfiveframes.domain.reviewLike.entity.ReviewLike;
 import com.example.twentyfiveframes.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -19,4 +20,8 @@ public interface ReviewLikeRepository extends JpaRepository<ReviewLike, Long> {
             "r.review.id, CAST(COUNT(r) AS int)) " +
             "FROM ReviewLike r WHERE r.review.id IN :reviewIds GROUP BY r.review.id")
     List<ReviewLikeCountDto> countLikesForReviewIds(@Param("reviewIds") List<Long> reviewIds);
+
+    @Modifying
+    @Query("DELETE FROM ReviewLike rl WHERE rl.review.id = :reviewId")
+    void deleteByReviewId(@Param("reviewId") Long reviewId);
 }
