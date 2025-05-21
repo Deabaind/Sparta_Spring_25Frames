@@ -19,4 +19,7 @@ public interface MovieService {
     void updateMovie(Long movieId, MovieRequestDto.Update dto);
 
     void deleteMove(Long movieId);
+
+
+
 }

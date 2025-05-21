@@ -1,5 +1,6 @@
 package com.example.twentyfiveframes.domain.reviewLike.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -13,5 +14,6 @@ public class ReviewLikeResponseDto {
 
     private Long reviewId;
     private Long userId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime likedAt;
 }

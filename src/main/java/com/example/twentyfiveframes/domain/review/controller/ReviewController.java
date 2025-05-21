@@ -6,6 +6,7 @@ import com.example.twentyfiveframes.domain.review.dto.ReviewUpdateRequestDto;
 import com.example.twentyfiveframes.domain.review.service.ReviewService;
 import com.example.twentyfiveframes.domain.reviewLike.dto.ReviewLikeCountDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +24,7 @@ public class ReviewController {
     public ResponseEntity<Void> createReview(@RequestBody ReviewRequestDto requestDto,
                                              @RequestParam Long userId) {
         reviewService.createReview(userId, requestDto);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     // 2. 리뷰 수정
@@ -40,14 +41,7 @@ public class ReviewController {
     public ResponseEntity<Void> deleteReview(@PathVariable Long reviewId,
                                              @RequestParam Long userId) {
         reviewService.deleteReview(reviewId, userId);
-        return ResponseEntity.ok().build();
-    }
-
-    // 4. 영화별 리뷰 조회
-    @GetMapping("/movie/{movieId}")
-    public ResponseEntity<List<ReviewResponseDto>> getReviewsByMovie(@PathVariable Long movieId) {
-        List<ReviewResponseDto> reviews = reviewService.getAllReviewsByMovie(movieId);
-        return ResponseEntity.ok(reviews);
+        return ResponseEntity.noContent().build(); // 204 No Content
     }
 
     // 5. 리뷰 좋아요 등록
@@ -58,10 +52,5 @@ public class ReviewController {
         return ResponseEntity.ok().build();
     }
 
-    // 6. 리뷰 좋아요 수 조회
-    @GetMapping("/{reviewId}/like/count")
-    public ResponseEntity<ReviewLikeCountDto> getLikeCount(@PathVariable Long reviewId) {
-        ReviewLikeCountDto dto = reviewService.getReviewLikeCount(reviewId);
-        return ResponseEntity.ok(dto);
-    }
+
 }
