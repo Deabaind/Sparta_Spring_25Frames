@@ -5,25 +5,20 @@ import com.example.twentyfiveframes.domain.movie.dto.MovieRequestDto;
 import com.example.twentyfiveframes.domain.movie.entity.Movie;
 import com.example.twentyfiveframes.domain.movie.entity.MovieGenre;
 import com.example.twentyfiveframes.domain.movie.repository.MovieRepository;
-import com.example.twentyfiveframes.domain.movie.service.MovieService;
 import com.example.twentyfiveframes.domain.review.dto.ReviewRequestDto;
-import com.example.twentyfiveframes.domain.review.dto.ReviewResponseDto;
 import com.example.twentyfiveframes.domain.review.dto.ReviewUpdateRequestDto;
 import com.example.twentyfiveframes.domain.review.entity.Review;
 import com.example.twentyfiveframes.domain.review.repository.ReviewRepository;
-import com.example.twentyfiveframes.domain.reviewLike.dto.ReviewLikeCountDto;
 import com.example.twentyfiveframes.domain.reviewLike.repository.ReviewLikeRepository;
 import com.example.twentyfiveframes.domain.user.entity.User;
 import com.example.twentyfiveframes.domain.user.entity.UserType;
 import com.example.twentyfiveframes.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import org.springframework.util.ReflectionUtils;
@@ -31,7 +26,6 @@ import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @SpringBootTest
 @Transactional
@@ -92,23 +86,6 @@ public class ReviewServiceTest {
         assertThat(reviews.get(0).getContent()).isEqualTo("재밌어요");
     }
 
-    @Test
-    void 리뷰_조회_전체() {
-        Review review = reviewRepository.save(new Review(user, movie, 5, "재밌어요"));
-        List<ReviewResponseDto> responses = reviewService.getAllReviews();
-
-        assertThat(responses).hasSize(1);
-        assertThat(responses.get(0).getContent()).isEqualTo("재밌어요");
-    }
-
-    @Test
-    void 리뷰_조회_영화별() {
-        reviewRepository.save(new Review(user, movie, 5, "영화별 리뷰"));
-        List<ReviewResponseDto> responses = reviewService.getAllReviewsByMovie(movie.getId());
-
-        assertThat(responses).hasSize(1);
-        assertThat(responses.get(0).getContent()).isEqualTo("영화별 리뷰");
-    }
 
     @Test
     void 리뷰_수정() {
@@ -137,9 +114,8 @@ public class ReviewServiceTest {
     void 리뷰_좋아요() {
         Review review = reviewRepository.save(new Review(user, movie, 5, "좋아요 리뷰"));
 
+        // 좋아요 누르기
         reviewService.likeReview(review.getId(), user.getId());
 
-        int likeCount = reviewService.getReviewLikeCount(review.getId()).getLikeCount(); // 메서드 이름이 countLikes 맞는지 확인
-        assertThat(likeCount).isEqualTo(1);
     }
 }

@@ -1,17 +1,13 @@
 package com.example.twentyfiveframes.domain.review.service;
 
-import com.example.twentyfiveframes.domain.movie.dto.MovieDetailResponseDto;
 import com.example.twentyfiveframes.domain.movie.entity.Movie;
 import com.example.twentyfiveframes.domain.movie.service.MovieService;
 import com.example.twentyfiveframes.domain.CustomException;
 import com.example.twentyfiveframes.domain.ErrorCode;
 import com.example.twentyfiveframes.domain.review.dto.ReviewRequestDto;
-import com.example.twentyfiveframes.domain.review.dto.ReviewResponseDto;
 import com.example.twentyfiveframes.domain.review.dto.ReviewUpdateRequestDto;
-import com.example.twentyfiveframes.domain.review.dto.ReviewWithLikeDto;
 import com.example.twentyfiveframes.domain.review.entity.Review;
 import com.example.twentyfiveframes.domain.review.repository.ReviewRepository;
-import com.example.twentyfiveframes.domain.reviewLike.dto.ReviewLikeCountDto;
 import com.example.twentyfiveframes.domain.reviewLike.entity.ReviewLike;
 import com.example.twentyfiveframes.domain.reviewLike.repository.ReviewLikeRepository;
 import com.example.twentyfiveframes.domain.user.entity.User;
@@ -20,9 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -82,24 +75,6 @@ public class ReviewService {
 
         reviewRepository.delete(review);
     }
-    /**
-     * 특정 영화에 대한 모든 리뷰 조회
-     *
-     *
-     */
-    @Transactional(readOnly = true)
-    public List<ReviewResponseDto> getAllReviewsByMovie(Long movieId) {
-        return reviewRepository.findAllByMovieId(movieId).stream()
-                .map(review -> new ReviewResponseDto(
-                        review.getId(),
-                        review.getUser().getId(),
-                        review.getUser().getUsername(),
-                        review.getMovie().getId(),
-                        review.getRating(),
-                        review.getContent()
-                )).collect(Collectors.toList());
-    }
-
     //리뷰 좋아요 등록
     public void likeReview(Long reviewId, Long userId) {
         Review review = reviewRepository.findById(reviewId)

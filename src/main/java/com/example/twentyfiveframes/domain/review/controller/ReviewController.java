@@ -1,16 +1,13 @@
 package com.example.twentyfiveframes.domain.review.controller;
 
+import com.example.twentyfiveframes.domain.review.dto.MessageResponseDto;
 import com.example.twentyfiveframes.domain.review.dto.ReviewRequestDto;
-import com.example.twentyfiveframes.domain.review.dto.ReviewResponseDto;
 import com.example.twentyfiveframes.domain.review.dto.ReviewUpdateRequestDto;
 import com.example.twentyfiveframes.domain.review.service.ReviewService;
-import com.example.twentyfiveframes.domain.reviewLike.dto.ReviewLikeCountDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,11 +26,11 @@ public class ReviewController {
 
     // 2. 리뷰 수정
     @PutMapping("/{reviewId}")
-    public ResponseEntity<Void> updateReview(@PathVariable Long reviewId,
-                                             @RequestBody ReviewUpdateRequestDto dto,
-                                             @RequestParam Long userId) {
+    public ResponseEntity<MessageResponseDto> updateReview(@PathVariable Long reviewId,
+                                                           @RequestBody ReviewUpdateRequestDto dto,
+                                                           @RequestParam Long userId) {
         reviewService.updateReview(reviewId, dto, userId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(new MessageResponseDto("리뷰가 수정되었습니다."));
     }
 
     // 3. 리뷰 삭제
@@ -46,10 +43,10 @@ public class ReviewController {
 
     // 5. 리뷰 좋아요 등록
     @PostMapping("/{reviewId}/like")
-    public ResponseEntity<Void> likeReview(@PathVariable Long reviewId,
+    public ResponseEntity<MessageResponseDto> likeReview(@PathVariable Long reviewId,
                                            @RequestParam Long userId) {
         reviewService.likeReview(reviewId, userId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(new MessageResponseDto("리뷰에 좋아요를 눌렀습니다."));
     }
 
 

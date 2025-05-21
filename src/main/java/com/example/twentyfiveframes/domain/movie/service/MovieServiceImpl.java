@@ -7,10 +7,11 @@ import com.example.twentyfiveframes.domain.movie.repository.MovieRepository;
 import com.example.twentyfiveframes.domain.review.dto.ReviewWithLikeDto;
 import com.example.twentyfiveframes.domain.review.entity.Review;
 import com.example.twentyfiveframes.domain.review.repository.ReviewRepository;
-import com.example.twentyfiveframes.domain.review.service.ReviewService;
+
 import com.example.twentyfiveframes.domain.reviewLike.dto.ReviewLikeCountDto;
 import com.example.twentyfiveframes.domain.reviewLike.repository.ReviewLikeRepository;
 import com.example.twentyfiveframes.domain.user.entity.User;
+
 import com.example.twentyfiveframes.domain.user.entity.UserType;
 import com.example.twentyfiveframes.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -27,6 +30,8 @@ import java.util.Objects;
 public class MovieServiceImpl implements MovieService{
 
     private final MovieRepository movieRepository;
+    private final ReviewRepository reviewRepository;
+    private final ReviewLikeRepository reviewLikeRepository;
     private final UserService userService;
 
     // movieId로 Movie 조회
@@ -38,8 +43,13 @@ public class MovieServiceImpl implements MovieService{
 
     // 영화 등록
     @Override
-    public MovieResponseDto.Save saveMovie(User user, MovieRequestDto.Save dto) {
-        Movie movie = new Movie(user, dto);
+    public MovieResponseDto.Save saveMovie(Long userId, MovieRequestDto.Save dto) {
+        User authUser = userService.getUserByUserId(userId);
+        if(!authUser.getRole().equals(UserType.ROLE_PROVIDER)) {
+            throw new AccessDeniedException("영화를 등록할 권한이 없습니다.");
+        }
+
+        Movie movie = new Movie(authUser, dto);
         movieRepository.save(movie);
 
         return new MovieResponseDto.Save("영화가 등록되었습니다.", movie.getId());
@@ -126,5 +136,7 @@ public class MovieServiceImpl implements MovieService{
 
         movie.softDelete();
     }
+
+
 
 }

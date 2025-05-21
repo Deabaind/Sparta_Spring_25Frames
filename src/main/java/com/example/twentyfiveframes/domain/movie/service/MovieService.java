@@ -10,13 +10,14 @@ import org.springframework.data.domain.Pageable;
 public interface MovieService {
     Movie getMovieById(Long movieId);
 
-    MovieResponseDto.Save saveMovie(User user, MovieRequestDto.Save dto);
+    MovieResponseDto.Save saveMovie(Long userId, MovieRequestDto.Save dto);
 
     Page<MovieResponseDto.GetAll> getAllMovies(Pageable pageable);
 
     MovieResponseDto.Get getMovie(Long movieId);
 
-    void updateMovie(Long movieId, MovieRequestDto.Update dto);
+    // 영화 수정
+    void updateMovie(Long userId, Long movieId, MovieRequestDto.Update dto);
 
     void deleteMovie(Long userId, Long movieId);
 }

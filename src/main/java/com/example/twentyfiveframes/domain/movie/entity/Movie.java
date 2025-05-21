@@ -49,7 +49,7 @@ public class Movie extends BaseEntity {
     @Column(nullable = false)
     private LocalDate releaseDate;
 
-    private Double averageRating; //todo 리뷰를 활용해 평균평점 계산하기, 리뷰 repository 추가 후 반영
+    private Double averageRating;
 
     @Column(nullable = false)
     private Long totalViews = 0L;
