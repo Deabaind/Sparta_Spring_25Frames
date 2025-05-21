@@ -55,4 +55,9 @@ public class UserServiceImpl implements UserService {
                 user.getRole().toString(),
                 user.getCreatedAt());
     }
+
+    @Override
+    public void deleteByUserId(Long userId) {
+        userRepository.deleteById(userId);
+    }
 }

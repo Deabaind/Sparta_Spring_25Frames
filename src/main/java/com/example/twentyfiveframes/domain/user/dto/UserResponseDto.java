@@ -23,7 +23,7 @@ public class UserResponseDto {
         private final String name;
         private final String userType;
 
-//        @JsonFormat(pattern = "yyyy-MM-dd")
+        @JsonFormat(pattern = "yyyy-MM-dd")
         private final LocalDateTime createdAt;
     }
 }
