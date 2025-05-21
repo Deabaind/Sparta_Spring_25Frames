@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 
 @Service
 @RequiredArgsConstructor
@@ -62,8 +64,13 @@ public class MovieServiceImpl implements MovieService{
 
     // 영화 수정
     @Override
-    public void updateMovie(Long movieId, MovieRequestDto.Update dto) {
+    public void updateMovie(Long userId, Long movieId, MovieRequestDto.Update dto) {
         Movie movie = getMovieById(movieId);
+
+        if(!Objects.equals(userId, movie.getUserId())) {
+            throw new AccessDeniedException("영화 수정 권한이 없습니다.");
+        }
+
         movie.update(dto);
     }
 
