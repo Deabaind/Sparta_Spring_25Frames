@@ -29,4 +29,16 @@ public class Review extends BaseEntity {
 
     @Column(nullable = false)
     private String content;
+
+    public Review(User user, Movie movie, int rating, String content) {
+        this.user = user;
+        this.movie = movie;
+        this.rating = rating;
+        this.content = content;
+    }
+
+    public void update(int rating, String content) {
+        this.rating = rating;
+        this.content = content;
+    }
 }

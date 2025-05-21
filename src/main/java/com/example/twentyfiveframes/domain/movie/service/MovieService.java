@@ -16,6 +16,7 @@ public interface MovieService {
 
     MovieResponseDto.Get getMovie(Long movieId);
 
+    // 영화 수정
     void updateMovie(Long userId, Long movieId, MovieRequestDto.Update dto);
 
     void deleteMovie(Long userId, Long movieId);
