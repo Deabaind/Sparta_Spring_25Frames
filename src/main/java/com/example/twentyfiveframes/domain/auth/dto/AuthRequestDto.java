@@ -42,7 +42,7 @@ public class AuthRequestDto {
 
     @Getter
     @RequiredArgsConstructor
-    public static class CheckPw {
+    public static class passwordConfirm {
 
         @NotBlank (message = "비밀번호는 필수 입력 항목입니다.")
         private final String password;

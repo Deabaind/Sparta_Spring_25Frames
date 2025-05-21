@@ -4,6 +4,7 @@ import com.example.twentyfiveframes.domain.auth.dto.AuthRequestDto;
 import com.example.twentyfiveframes.domain.auth.dto.AuthResponseDto;
 import com.example.twentyfiveframes.domain.user.dto.UserRequestDto;
 import com.example.twentyfiveframes.domain.user.dto.UserResponseDto;
+import com.example.twentyfiveframes.domain.user.entity.User;
 import com.example.twentyfiveframes.domain.user.service.UserService;
 import com.example.twentyfiveframes.security.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -56,8 +57,12 @@ public class AuthServiceImpl implements AuthService {
 
     // 탈퇴
     @Override
-    public void delete(Long userId, AuthRequestDto.CheckPw dto) {
-
+    public void delete(Long userId, AuthRequestDto.passwordConfirm dto) {
+        User user = userService.getUserByUserId(userId);
+        if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+        }
+        userService.deleteByUserId(userId);
     }
 
 

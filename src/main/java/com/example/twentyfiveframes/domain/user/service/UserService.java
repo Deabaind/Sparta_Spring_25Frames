@@ -17,4 +17,7 @@ public interface UserService {
 
     // user 정보 조회
     UserResponseDto.Get get(Long userId);
+
+    // user 삭제
+    void deleteByUserId(Long userId);
 }
