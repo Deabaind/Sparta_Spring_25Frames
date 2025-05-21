@@ -155,7 +155,6 @@ public class MovieServiceImplTest {
 
         given(movieRepository.findById(10L)).willReturn(Optional.of(movie));
 
-
         // when
         movieService.updateMovie(1L, 10L, dto);
 
@@ -163,5 +162,25 @@ public class MovieServiceImplTest {
         assertThat(movie.getTitle()).isEqualTo("인터스텔라");
     }
 
+    @Test
+    @DisplayName("영화 삭제")
+    void deleteMovie() {
+        // given
+        User user = new User();
+        ReflectionTestUtils.setField(user, "id", 1L);
+        ReflectionTestUtils.setField(user, "role", ROLE_PROVIDER);
+
+        Movie movie = new Movie();
+        ReflectionTestUtils.setField(movie, "id", 10L);
+        ReflectionTestUtils.setField(movie, "user", user);
+
+        given(movieRepository.findById(10L)).willReturn(Optional.of(movie));
+
+        // when
+        movieService.deleteMovie(1L, 10L);
+
+        // then
+        assertThat(movie.getDeletedAt()).isNotNull();
+    }
 
 }
