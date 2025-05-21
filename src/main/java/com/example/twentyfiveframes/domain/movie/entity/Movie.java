@@ -25,7 +25,9 @@ public class Movie extends BaseEntity {
     private Long id;
 
     // todo: User 엔티티와 연관 관계
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(nullable = false, length = 30)
     private String title;
@@ -54,7 +56,7 @@ public class Movie extends BaseEntity {
     private Long totalViews = 0L;
 
     public Movie(User user, MovieRequestDto.Save dto) {
-        this.userId = user.getId();
+        this.user = user;
         this.title = dto.getTitle();
         this.summary = dto.getSummary();
         this.director = dto.getDirector();
