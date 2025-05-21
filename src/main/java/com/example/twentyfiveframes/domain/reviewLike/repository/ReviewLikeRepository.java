@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface ReviewLikeRepository extends JpaRepository<ReviewLike, Long> {
     boolean existsByReviewAndUser(Review review, User user);
-    int countByReviewId(Long reviewId);
+
 
     // ✅ 리뷰 ID 목록에 대해 좋아요 수를 한 번에 조회
     @Query("SELECT new com.example.twentyfiveframes.domain.reviewLike.dto.ReviewLikeCountDto(" +

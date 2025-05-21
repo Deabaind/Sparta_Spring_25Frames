@@ -4,7 +4,7 @@ import com.example.twentyfiveframes.domain.review.dto.MessageResponseDto;
 import com.example.twentyfiveframes.domain.review.dto.ReviewRequestDto;
 import com.example.twentyfiveframes.domain.review.dto.ReviewUpdateRequestDto;
 import com.example.twentyfiveframes.domain.review.service.ReviewService;
-import com.example.twentyfiveframes.security.CustomUserDetails;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
