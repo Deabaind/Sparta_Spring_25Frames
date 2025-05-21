@@ -20,7 +20,7 @@ public class AuthController {
 
     // 회원가입
     @PostMapping("/signup")
-    public ResponseEntity<UserResponseDto.Signup> signup(@RequestBody AuthRequestDto.Signup signup
+    public ResponseEntity<UserResponseDto.Signup> signup(@Valid @RequestBody AuthRequestDto.Signup signup
     ) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.signup(signup));
