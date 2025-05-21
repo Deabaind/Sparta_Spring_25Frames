@@ -4,15 +4,15 @@ import com.example.twentyfiveframes.domain.common.BaseEntity;
 import com.example.twentyfiveframes.domain.movie.dto.MovieRequestDto;
 import com.example.twentyfiveframes.domain.user.entity.User;
 import jakarta.persistence.*;
-<<<<<<< HEAD
+
 import lombok.*;
-=======
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
->>>>>>> origin/dev
+
 
 import java.time.LocalDate;
 
