@@ -31,7 +31,7 @@ public class AuthController {
     }
 
     // 탈퇴
-    @DeleteMapping("/users/delete")
+    @DeleteMapping("/users")
     public ResponseEntity<Void> delete(@Valid @RequestBody AuthRequestDto.passwordConfirm dto, @AuthenticationPrincipal Long userId) {
         authService.delete(userId, dto);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
