@@ -57,6 +57,7 @@ public class MovieResponseDto {
         private final LocalDate releaseDate;
         private final Double averageRating;
         //todo: review list 반환
+        private final Long totalViews;
         @JsonFormat(pattern = "yyyy-MM-dd")
         private final LocalDateTime createdAt;
         @JsonFormat(pattern = "yyyy-MM-dd")
@@ -74,6 +75,7 @@ public class MovieResponseDto {
                     movie.getReleaseDate(),
                     movie.getAverageRating(),
                     //todo 리뷰list
+                    total,
                     movie.getCreatedAt(),
                     movie.getUpdatedAt()
             );
