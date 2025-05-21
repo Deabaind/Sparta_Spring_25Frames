@@ -46,7 +46,6 @@ public class MovieServiceImplTest {
     @Test
     @DisplayName("PROVIDER 유저가 영화 등록")
     void saveMovie() {
-
         // given
         User user = new User();
         ReflectionTestUtils.setField(user, "id", 1L);
@@ -137,5 +136,32 @@ public class MovieServiceImplTest {
         assertThat(result.getGenre()).isEqualTo("FANTASY");
         assertThat(result.getReleaseDate()).isEqualTo("2020-01-01");
     }
+
+    @Test
+    @DisplayName("영화 정보 수정")
+    void updateMovie() {
+        // given
+        User user = new User();
+        ReflectionTestUtils.setField(user, "id", 1L);
+        ReflectionTestUtils.setField(user, "role", ROLE_PROVIDER);
+
+        Movie movie = new Movie();
+        ReflectionTestUtils.setField(movie, "id", 10L);
+        ReflectionTestUtils.setField(movie, "user", user);
+        ReflectionTestUtils.setField(movie, "title", "제목 미정");
+
+        MovieRequestDto.Update dto = new MovieRequestDto.Update();
+        ReflectionTestUtils.setField(dto, "title", "인터스텔라");
+
+        given(movieRepository.findById(10L)).willReturn(Optional.of(movie));
+
+
+        // when
+        movieService.updateMovie(1L, 10L, dto);
+
+        // then
+        assertThat(movie.getTitle()).isEqualTo("인터스텔라");
+    }
+
 
 }
