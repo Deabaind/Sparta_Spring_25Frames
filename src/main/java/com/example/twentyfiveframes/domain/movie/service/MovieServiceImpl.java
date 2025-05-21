@@ -4,11 +4,19 @@ import com.example.twentyfiveframes.domain.movie.dto.MovieRequestDto;
 import com.example.twentyfiveframes.domain.movie.dto.MovieResponseDto;
 import com.example.twentyfiveframes.domain.movie.entity.Movie;
 import com.example.twentyfiveframes.domain.movie.repository.MovieRepository;
+import com.example.twentyfiveframes.domain.review.dto.ReviewWithLikeDto;
+import com.example.twentyfiveframes.domain.review.entity.Review;
+import com.example.twentyfiveframes.domain.review.repository.ReviewRepository;
+import com.example.twentyfiveframes.domain.review.service.ReviewService;
+import com.example.twentyfiveframes.domain.reviewLike.repository.ReviewLikeRepository;
 import com.example.twentyfiveframes.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -16,6 +24,8 @@ import org.springframework.stereotype.Service;
 public class MovieServiceImpl implements MovieService{
 
     private final MovieRepository movieRepository;
+    private final ReviewRepository reviewRepository;
+    private final ReviewLikeRepository reviewLikeRepository;
 
     // movieId로 Movie 조회
     @Override
@@ -46,9 +56,31 @@ public class MovieServiceImpl implements MovieService{
     public MovieResponseDto.Get getMovie(Long movieId) {
         Movie movie = getMovieById(movieId);
 
-        //todo 리뷰 조회, 리뷰 dto 변환, 아래 return 코드에서 함께 반환
+        List<Review> reviews = reviewRepository.findAllByMovieId(movieId);
+        List<ReviewWithLikeDto> reviewDtos = reviews.stream()
+                .map(review -> new ReviewWithLikeDto(
+                        review.getId(),
+                        review.getUser().getId(),
+                        review.getUser().getUsername(),
+                        review.getRating(),
+                        review.getContent(),
+                        reviewLikeRepository.countByReviewId(review.getId())
+                )).collect(Collectors.toList());
 
-        return MovieResponseDto.Get.from(movie);
+        return new MovieResponseDto.Get(
+                movie.getId(),
+                movie.getTitle(),
+                movie.getSummary(),
+                movie.getDirector(),
+                movie.getAgeLimit(),
+                movie.getGenre().toString(),
+                movie.getRunningTime(),
+                movie.getReleaseDate(),
+                movie.getAverageRating(),
+                movie.getCreatedAt(),
+                movie.getUpdatedAt(),
+                reviewDtos
+        );
     }
 
     // 영화 수정

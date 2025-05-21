@@ -44,13 +44,6 @@ public class ReviewController {
         return ResponseEntity.noContent().build(); // 204 No Content
     }
 
-    // 4. 영화별 리뷰 조회
-    @GetMapping("/movie/{movieId}")
-    public ResponseEntity<List<ReviewResponseDto>> getReviewsByMovie(@PathVariable Long movieId) {
-        List<ReviewResponseDto> reviews = reviewService.getAllReviewsByMovie(movieId);
-        return ResponseEntity.ok(reviews);
-    }
-
     // 5. 리뷰 좋아요 등록
     @PostMapping("/{reviewId}/like")
     public ResponseEntity<Void> likeReview(@PathVariable Long reviewId,

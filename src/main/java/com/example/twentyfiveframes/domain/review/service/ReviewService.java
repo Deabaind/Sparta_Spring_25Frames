@@ -4,6 +4,8 @@ import com.example.twentyfiveframes.domain.movie.dto.MovieDetailResponseDto;
 import com.example.twentyfiveframes.domain.movie.entity.Movie;
 import com.example.twentyfiveframes.domain.movie.repository.MovieRepository;
 import com.example.twentyfiveframes.domain.movie.service.MovieService;
+import com.example.twentyfiveframes.domain.review.CustomException;
+import com.example.twentyfiveframes.domain.review.ErrorCode;
 import com.example.twentyfiveframes.domain.review.dto.ReviewRequestDto;
 import com.example.twentyfiveframes.domain.review.dto.ReviewResponseDto;
 import com.example.twentyfiveframes.domain.review.dto.ReviewUpdateRequestDto;
@@ -45,10 +47,10 @@ public class ReviewService {
 
     public void updateReview(Long reviewId, ReviewUpdateRequestDto dto, Long userId) {
         Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new IllegalArgumentException("리뷰를 찾을 수 없습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND));
 
         if (!review.getUser().getId().equals(userId)) {
-            throw new IllegalArgumentException("본인의 리뷰만 수정할 수 있습니다.");
+            throw new CustomException(ErrorCode.REVIEW_FORBIDDEN);
         }
 
         review.update(dto.getRating(), dto.getContent());
@@ -56,10 +58,10 @@ public class ReviewService {
 
     public void deleteReview(Long reviewId, Long userId) {
         Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new IllegalArgumentException("리뷰를 찾을 수 없습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND));
 
         if (!review.getUser().getId().equals(userId)) {
-            throw new IllegalArgumentException("본인의 리뷰만 삭제할 수 있습니다.");
+            throw new CustomException(ErrorCode.REVIEW_FORBIDDEN);
         }
 
         reviewRepository.delete(review);
@@ -80,13 +82,14 @@ public class ReviewService {
 
     public void likeReview(Long reviewId, Long userId) {
         Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new IllegalArgumentException("리뷰를 찾을 수 없습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND));
         User user = userService.getUserByUserId(userId);
 
         boolean exists = reviewLikeRepository.existsByReviewAndUser(review, user);
         if (exists) {
-            throw new IllegalStateException("이미 좋아요를 눌렀습니다.");
+            throw new CustomException(ErrorCode.ALREADY_LIKED);
         }
+
 
         ReviewLike like = new ReviewLike(review, user);
         reviewLikeRepository.save(like);
