@@ -62,7 +62,7 @@ public class MovieResponseDto {
         @JsonFormat(pattern = "yyyy-MM-dd")
         private final LocalDateTime updatedAt;
 
-        public static Get from(Movie movie) {
+        public static Get from(Movie movie, Long total) {
             return new Get(
                     movie.getId(),
                     movie.getTitle(),

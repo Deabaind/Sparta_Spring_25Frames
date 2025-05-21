@@ -22,6 +22,7 @@ public class MovieServiceImpl implements MovieService{
 
     private final MovieRepository movieRepository;
     private final UserService userService;
+    private final MovieViewCountService movieViewCountService;
 
     // movieId로 Movie 조회
     @Override
@@ -59,7 +60,11 @@ public class MovieServiceImpl implements MovieService{
 
         //todo 리뷰 조회, 리뷰 dto 변환, 아래 return 코드에서 함께 반환
 
-        return MovieResponseDto.Get.from(movie);
+        movieViewCountService.increaseViewCount(movieId); // 캐시에 조회수 +1
+
+        long total = movie.getTotalViews() + movieViewCountService.getTodayViews(movieId); // DB 누적 조회수 + 오늘 캐시 조회수
+
+        return MovieResponseDto.Get.from(movie, total);
     }
 
     // 영화 수정
