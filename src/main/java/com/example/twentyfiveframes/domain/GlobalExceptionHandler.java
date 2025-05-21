@@ -14,10 +14,4 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(errorCode.getCode(), errorCode.getMessage()));
     }
 
-    // 그 외 예외
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponse("INTERNAL_ERROR", ex.getMessage()));
-    }
 }

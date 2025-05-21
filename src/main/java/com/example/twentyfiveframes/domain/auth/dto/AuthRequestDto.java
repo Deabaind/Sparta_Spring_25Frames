@@ -3,11 +3,13 @@ package com.example.twentyfiveframes.domain.auth.dto;
 import com.example.twentyfiveframes.domain.user.entity.UserType;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 public class AuthRequestDto {
 
     @Getter
+    @NoArgsConstructor(force = true)
     @RequiredArgsConstructor
     public static class Signup {
 
