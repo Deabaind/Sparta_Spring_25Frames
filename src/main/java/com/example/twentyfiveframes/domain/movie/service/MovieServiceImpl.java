@@ -67,7 +67,7 @@ public class MovieServiceImpl implements MovieService{
     public void updateMovie(Long userId, Long movieId, MovieRequestDto.Update dto) {
         Movie movie = getMovieById(movieId);
 
-        if(!Objects.equals(userId, movie.getUserId())) {
+        if(!userId.equals(movie.getUser().getId())) {
             throw new AccessDeniedException("영화 수정 권한이 없습니다.");
         }
 
