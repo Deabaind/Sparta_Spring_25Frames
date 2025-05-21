@@ -1,4 +1,4 @@
-package com.example.twentyfiveframes.domain.review;
+package com.example.twentyfiveframes.domain;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

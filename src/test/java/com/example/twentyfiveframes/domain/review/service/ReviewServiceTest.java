@@ -84,6 +84,9 @@ public class ReviewServiceTest {
         ReviewRequestDto request = new ReviewRequestDto(movie.getId(), 5, "재밌어요");
         reviewService.createReview(user.getId(), request);
 
+        Movie updatedMovie = movieRepository.findById(movie.getId()).orElseThrow();
+        assertThat(updatedMovie.getAverageRating()).isEqualTo(5.0); // 평균 평점 확인
+
         List<Review> reviews = reviewRepository.findAll();
         assertThat(reviews).hasSize(1);
         assertThat(reviews.get(0).getContent()).isEqualTo("재밌어요");

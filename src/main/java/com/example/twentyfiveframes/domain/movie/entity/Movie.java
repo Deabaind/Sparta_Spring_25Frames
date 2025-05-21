@@ -57,7 +57,15 @@ public class Movie extends BaseEntity {
     @Column(nullable = false)
     private Long totalViews = 0L;
 
-
+    /**
+     * 영화의 평균 평점을 갱신하는 메서드입니다.
+     * 리뷰 등록, 수정, 삭제 후 새로 계산된 평균 평점을 반영할 때 사용합니다.
+     *
+     * @param averageRating 새로 계산된 평균 평점
+     */
+    public void updateAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
+    }
 
     public Movie(User user, MovieRequestDto.Save dto) {
         this.userId = user.getId();

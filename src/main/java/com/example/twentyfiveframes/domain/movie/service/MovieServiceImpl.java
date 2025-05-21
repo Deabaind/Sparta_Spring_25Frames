@@ -8,6 +8,7 @@ import com.example.twentyfiveframes.domain.review.dto.ReviewWithLikeDto;
 import com.example.twentyfiveframes.domain.review.entity.Review;
 import com.example.twentyfiveframes.domain.review.repository.ReviewRepository;
 import com.example.twentyfiveframes.domain.review.service.ReviewService;
+import com.example.twentyfiveframes.domain.reviewLike.dto.ReviewLikeCountDto;
 import com.example.twentyfiveframes.domain.reviewLike.repository.ReviewLikeRepository;
 import com.example.twentyfiveframes.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -54,9 +56,25 @@ public class MovieServiceImpl implements MovieService{
     // 영화 단건 조회
     @Override
     public MovieResponseDto.Get getMovie(Long movieId) {
+        // 1. 영화 조회
         Movie movie = getMovieById(movieId);
 
+        // 2. 해당 영화의 모든 리뷰 조회
         List<Review> reviews = reviewRepository.findAllByMovieId(movieId);
+        List<Long> reviewIds = reviews.stream()
+                .map(Review::getId)
+                .toList();
+
+        // 3. 리뷰 ID 기준 좋아요 수 한 번에 조회 → Map으로 변환
+        Map<Long, Integer> likeCountMap = reviewLikeRepository
+                .countLikesForReviewIds(reviewIds)
+                .stream()
+                .collect(Collectors.toMap(
+                        ReviewLikeCountDto::getReviewId,
+                        ReviewLikeCountDto::getLikeCount
+                ));
+
+        // 4. 리뷰 DTO 구성
         List<ReviewWithLikeDto> reviewDtos = reviews.stream()
                 .map(review -> new ReviewWithLikeDto(
                         review.getId(),
@@ -64,9 +82,11 @@ public class MovieServiceImpl implements MovieService{
                         review.getUser().getUsername(),
                         review.getRating(),
                         review.getContent(),
-                        reviewLikeRepository.countByReviewId(review.getId())
-                )).collect(Collectors.toList());
+                        likeCountMap.getOrDefault(review.getId(), 0)
+                ))
+                .collect(Collectors.toList());
 
+        // 5. 최종 응답
         return new MovieResponseDto.Get(
                 movie.getId(),
                 movie.getTitle(),
@@ -82,7 +102,6 @@ public class MovieServiceImpl implements MovieService{
                 reviewDtos
         );
     }
-
     // 영화 수정
     @Override
     public void updateMovie(Long movieId, MovieRequestDto.Update dto) {
