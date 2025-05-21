@@ -13,7 +13,7 @@ public class MovieViewCountService {
 
     // 캐시에 +1
     public void increaseViewCount(Long movieId) {
-        viewCountCache.merge(movieId, 1L, Long::sum);
+        viewCountCache.merge(movieId, 1L, (a, b) -> a + b);
     }
 
     // movieId에 해당하는 오늘의 조회수
