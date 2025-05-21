@@ -5,6 +5,7 @@ import com.example.twentyfiveframes.domain.movie.dto.MovieResponseDto;
 import com.example.twentyfiveframes.domain.movie.service.MovieService;
 import com.example.twentyfiveframes.domain.user.entity.User;
 import com.example.twentyfiveframes.domain.user.entity.UserType;
+import com.example.twentyfiveframes.domain.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,13 +23,13 @@ import org.springframework.web.bind.annotation.*;
 public class MovieController {
 
     private final MovieService movieService;
+    private final UserService userService;
 
     // 영화 등록
     @PostMapping
-    public ResponseEntity<MovieResponseDto.Save> saveMovie(@Valid @RequestBody MovieRequestDto.Save dto) {
-        //todo 임시로 로그인 유저로 사용하는 객체, JWT 구현 후 반드시 제거
-        User fakeUser = new User("provider@email.com", "TEST1234", "테스트", UserType.ROLE_PROVIDER);
-        MovieResponseDto.Save response = movieService.saveMovie(fakeUser, dto);
+    public ResponseEntity<MovieResponseDto.Save> saveMovie(@AuthenticationPrincipal Long userId,
+                                                           @Valid @RequestBody MovieRequestDto.Save dto) {
+        MovieResponseDto.Save response = movieService.saveMovie(userId, dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

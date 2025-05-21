@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 public interface MovieService {
     Movie getMovieById(Long movieId);
 
-    MovieResponseDto.Save saveMovie(User user, MovieRequestDto.Save dto);
+    MovieResponseDto.Save saveMovie(Long userId, MovieRequestDto.Save dto);
 
     Page<MovieResponseDto.GetAll> getAllMovies(Pageable pageable);
 
