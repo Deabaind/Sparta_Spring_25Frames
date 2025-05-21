@@ -28,4 +28,10 @@ public class ReviewLike {
 
     @CreatedDate
     private LocalDateTime createdAt;
+
+    public ReviewLike(Review review, User user) {
+        this.review = review;
+        this.user = user;
+        this.createdAt = LocalDateTime.now();
+    }
 }

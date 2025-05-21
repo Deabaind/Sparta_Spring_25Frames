@@ -1,12 +1,14 @@
 package com.example.twentyfiveframes.domain.movie.dto;
 
 import com.example.twentyfiveframes.domain.movie.entity.Movie;
+import com.example.twentyfiveframes.domain.review.dto.ReviewWithLikeDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class MovieResponseDto {
 
@@ -25,6 +27,7 @@ public class MovieResponseDto {
         private final String summary;
         private final String genre;
         private final Double averageRating;
+
 
         public static GetAll from(Movie movie) {
             Double averageRating = movie.getAverageRating();
@@ -62,7 +65,9 @@ public class MovieResponseDto {
         @JsonFormat(pattern = "yyyy-MM-dd")
         private final LocalDateTime updatedAt;
 
-        public static Get from(Movie movie) {
+        private final List<ReviewWithLikeDto> reviews;
+
+        public static Get from(Movie movie, List<ReviewWithLikeDto> reviews) {
             return new Get(
                     movie.getId(),
                     movie.getTitle(),
@@ -75,7 +80,8 @@ public class MovieResponseDto {
                     movie.getAverageRating(),
                     //todo 리뷰list
                     movie.getCreatedAt(),
-                    movie.getUpdatedAt()
+                    movie.getUpdatedAt(),
+                    reviews
             );
         }
     }
