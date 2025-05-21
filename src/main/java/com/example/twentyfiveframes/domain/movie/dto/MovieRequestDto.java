@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
@@ -48,6 +49,7 @@ public class MovieRequestDto {
     // 영화 수정
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Update {
 
         @Size(max = 30, message = "30자 이하로 입력할 수 있습니다.")

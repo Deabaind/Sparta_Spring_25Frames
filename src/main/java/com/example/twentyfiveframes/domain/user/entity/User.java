@@ -4,12 +4,14 @@ import com.example.twentyfiveframes.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Getter
+@SQLDelete(sql = "UPDATE movie_db.user SET deleted_at = now() WHERE id = ?")
+@SQLRestriction("deleted_at is null")
 @NoArgsConstructor
-@Setter
 public class User extends BaseEntity {
 
     @Id

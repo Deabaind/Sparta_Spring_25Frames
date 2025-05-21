@@ -7,6 +7,7 @@ import com.example.twentyfiveframes.domain.movie.entity.MovieGenre;
 import com.example.twentyfiveframes.domain.movie.repository.MovieRepository;
 import com.example.twentyfiveframes.domain.movie.service.MovieServiceImpl;
 import com.example.twentyfiveframes.domain.user.entity.User;
+import com.example.twentyfiveframes.domain.user.service.UserServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +24,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.twentyfiveframes.domain.user.entity.UserType.ROLE_PROVIDER;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -38,16 +40,22 @@ public class MovieServiceImplTest {
     @Mock
     private MovieRepository movieRepository;
 
+    @Mock
+    private UserServiceImpl userService;
+
     @Test
     @DisplayName("PROVIDER 유저가 영화 등록")
     void saveMovie() {
-
         // given
         User user = new User();
+        ReflectionTestUtils.setField(user, "id", 1L);
+        ReflectionTestUtils.setField(user, "role", ROLE_PROVIDER);
 
         MovieRequestDto.Save dto = new MovieRequestDto.Save("기생충",
                 "계획이 다 있음","봉준호",15,
                 MovieGenre.DRAMA,131, LocalDate.of(2019,5,30));
+
+        given(userService.getUserByUserId(user.getId())).willReturn(user);
 
         given(movieRepository.save(any())).willAnswer(invocation -> {
             Movie saved = invocation.getArgument(0);
@@ -56,7 +64,7 @@ public class MovieServiceImplTest {
         });
 
         // when
-        MovieResponseDto.Save result = movieService.saveMovie(user, dto);
+        MovieResponseDto.Save result = movieService.saveMovie(user.getId(), dto);
 
         // then
         assertThat(result.getMessage()).isEqualTo("영화가 등록되었습니다.");
@@ -127,6 +135,52 @@ public class MovieServiceImplTest {
         assertThat(result.getSummary()).isEqualTo("해리포터 요약");
         assertThat(result.getGenre()).isEqualTo("FANTASY");
         assertThat(result.getReleaseDate()).isEqualTo("2020-01-01");
+    }
+
+    @Test
+    @DisplayName("영화 정보 수정")
+    void updateMovie() {
+        // given
+        User user = new User();
+        ReflectionTestUtils.setField(user, "id", 1L);
+        ReflectionTestUtils.setField(user, "role", ROLE_PROVIDER);
+
+        Movie movie = new Movie();
+        ReflectionTestUtils.setField(movie, "id", 10L);
+        ReflectionTestUtils.setField(movie, "user", user);
+        ReflectionTestUtils.setField(movie, "title", "제목 미정");
+
+        MovieRequestDto.Update dto = new MovieRequestDto.Update();
+        ReflectionTestUtils.setField(dto, "title", "인터스텔라");
+
+        given(movieRepository.findById(10L)).willReturn(Optional.of(movie));
+
+        // when
+        movieService.updateMovie(1L, 10L, dto);
+
+        // then
+        assertThat(movie.getTitle()).isEqualTo("인터스텔라");
+    }
+
+    @Test
+    @DisplayName("영화 삭제")
+    void deleteMovie() {
+        // given
+        User user = new User();
+        ReflectionTestUtils.setField(user, "id", 1L);
+        ReflectionTestUtils.setField(user, "role", ROLE_PROVIDER);
+
+        Movie movie = new Movie();
+        ReflectionTestUtils.setField(movie, "id", 10L);
+        ReflectionTestUtils.setField(movie, "user", user);
+
+        given(movieRepository.findById(10L)).willReturn(Optional.of(movie));
+
+        // when
+        movieService.deleteMovie(1L, 10L);
+
+        // then
+        assertThat(movie.getDeletedAt()).isNotNull();
     }
 
 }
