@@ -76,8 +76,13 @@ public class MovieServiceImpl implements MovieService{
 
     // 영화 삭제
     @Override
-    public void deleteMove(Long movieId) {
+    public void deleteMovie(Long userId, Long movieId) {
         Movie movie = getMovieById(movieId);
+
+        if(!userId.equals(movie.getUser().getId())) {
+            throw new AccessDeniedException("영화 삭제 권한이 없습니다.");
+        }
+
         movie.softDelete();
     }
 

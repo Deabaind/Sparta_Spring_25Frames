@@ -18,5 +18,5 @@ public interface MovieService {
 
     void updateMovie(Long userId, Long movieId, MovieRequestDto.Update dto);
 
-    void deleteMove(Long movieId);
+    void deleteMovie(Long userId, Long movieId);
 }
