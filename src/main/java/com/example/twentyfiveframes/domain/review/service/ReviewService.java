@@ -53,7 +53,7 @@ public class ReviewService {
      * 리뷰 수정
      *
      */
-    public void updateReview(Long reviewId, ReviewUpdateRequestDto dto, Long userId) {
+    public void updateReview(Long reviewId, ReviewUpdateRequestDto dto, Long userId,ReviewRequestDto requestDto) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND));
 
@@ -61,6 +61,9 @@ public class ReviewService {
             throw new CustomException(ErrorCode.REVIEW_FORBIDDEN);
         }
 
+        if (requestDto.getRating() < 1 || requestDto.getRating() > 5) {
+            throw new CustomException(ErrorCode.INVALID_RATING);
+        }
         review.update(dto.getRating(), dto.getContent());
     }
     /**
