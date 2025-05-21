@@ -1,12 +1,13 @@
 package com.example.twentyfiveframes.domain.movie.service;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Service
+@Component
 public class MovieViewCountService {
 
     private final Map<Long, Long> viewCountCache = new ConcurrentHashMap<>(); //movieId - 오늘 누적 조회수 저장
