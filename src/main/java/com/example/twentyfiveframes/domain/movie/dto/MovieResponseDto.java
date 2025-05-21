@@ -59,7 +59,7 @@ public class MovieResponseDto {
         private final Integer runningTime;
         private final LocalDate releaseDate;
         private final Double averageRating;
-//        private final Long totalViews;
+        private final Long totalViews;
         @JsonFormat(pattern = "yyyy-MM-dd")
         private final LocalDateTime createdAt;
         @JsonFormat(pattern = "yyyy-MM-dd")
@@ -67,8 +67,7 @@ public class MovieResponseDto {
 
         private final List<ReviewWithLikeDto> reviews;
 
-        public static Get from(Movie movie, List<ReviewWithLikeDto> reviews) {
-//        public static Get from(Movie movie, Long total) {
+        public static Get from(Movie movie, Long total, List<ReviewWithLikeDto> reviews) {
             return new Get(
                     movie.getId(),
                     movie.getTitle(),
@@ -79,7 +78,7 @@ public class MovieResponseDto {
                     movie.getRunningTime(),
                     movie.getReleaseDate(),
                     movie.getAverageRating(),
-//                    total,
+                    total,
                     movie.getCreatedAt(),
                     movie.getUpdatedAt(),
                     reviews

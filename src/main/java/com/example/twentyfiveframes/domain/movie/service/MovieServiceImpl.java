@@ -105,9 +105,8 @@ public class MovieServiceImpl implements MovieService{
                 .collect(Collectors.toList());
 
         // 5. 최종 응답
-          return MovieResponseDto.Get.from(movie, reviewDtos);
+          return MovieResponseDto.Get.from(movie, total, reviewDtos);
 
-//        return MovieResponseDto.Get.from(movie, total);
     }
 
     // 영화 수정
