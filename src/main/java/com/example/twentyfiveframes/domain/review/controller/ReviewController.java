@@ -5,6 +5,7 @@ import com.example.twentyfiveframes.domain.review.dto.ReviewRequestDto;
 import com.example.twentyfiveframes.domain.review.dto.ReviewUpdateRequestDto;
 import com.example.twentyfiveframes.domain.review.service.ReviewService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class ReviewController {
 
     // 1. 리뷰 등록
     @PostMapping
-    public ResponseEntity<Void> createReview(@RequestBody ReviewRequestDto requestDto,
+    public ResponseEntity<Void> createReview(@RequestBody @Valid ReviewRequestDto requestDto,
                                              @AuthenticationPrincipal Long userId) {
         reviewService.createReview(userId, requestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -29,7 +30,7 @@ public class ReviewController {
     // 2. 리뷰 수정
     @PutMapping("/{reviewId}")
     public ResponseEntity<MessageResponseDto> updateReview(@PathVariable("reviewId") Long reviewId,
-                                                           @RequestBody ReviewUpdateRequestDto dto,
+                                                           @RequestBody @Valid ReviewUpdateRequestDto dto,
                                                            @AuthenticationPrincipal Long userId) {
         reviewService.updateReview(reviewId, dto, userId);
         return ResponseEntity.ok(new MessageResponseDto("리뷰가 수정되었습니다."));

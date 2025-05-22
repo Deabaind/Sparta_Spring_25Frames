@@ -45,9 +45,6 @@ public class ReviewService {
         if (avgRating != null) {
             movie.updateAverageRating(avgRating);
         }
-        if (requestDto.getRating() < 1 || requestDto.getRating() > 5) {
-            throw new CustomException(ErrorCode.INVALID_RATING);
-        }
     }
     /**
      * 리뷰 수정
@@ -61,10 +58,6 @@ public class ReviewService {
             throw new CustomException(ErrorCode.REVIEW_FORBIDDEN);
         }
 
-        // 평점 유효성 검사 추가
-        if (dto.getRating() < 1 || dto.getRating() > 5) {
-            throw new CustomException(ErrorCode.INVALID_RATING);
-        }
 
         review.update(dto.getRating(), dto.getContent());
     }
