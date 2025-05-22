@@ -128,12 +128,11 @@ public class MovieServiceImpl implements MovieService{
         return movieRepository.search(t, g);
     }
 
+    // 인기 검색어 상위 N개 조회
     @Override
     public List<String> topKeywords(int limit) {
         return keywordCounter.topKeywords(limit);
     }
-
-    // 인기 검색어 조회
 
     // 오류로 인한 임시 생성
     @Override
