@@ -1,6 +1,9 @@
-package com.example.twentyfiveframes.security;
+package com.example.twentyfiveframes.config;
 
 import com.example.twentyfiveframes.filter.JwtAuthenticationFilter;
+import com.example.twentyfiveframes.security.CustomAccessDeniedHandler;
+import com.example.twentyfiveframes.security.CustomAuthenticationEntryPoint;
+import com.example.twentyfiveframes.domain.auth.service.JwtService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -46,6 +49,8 @@ public class SecurityConfig {
                 .httpBasic(httpBasic -> httpBasic
                         .disable())
                 .formLogin(formLogin -> formLogin
+                        .disable())
+                .logout(logout -> logout
                         .disable())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -73,7 +73,12 @@ public class Movie extends BaseEntity {
         if (dto.getGenre() != null) this.genre = dto.getGenre();
         if (dto.getRunningTime() != null) this.runningTime = dto.getRunningTime();
     }
+
     public void updateAverageRating(Double averageRating) {
         this.averageRating = averageRating;
+    }
+
+    public void addViews(Long count) {
+        this.totalViews += count;
     }
 }

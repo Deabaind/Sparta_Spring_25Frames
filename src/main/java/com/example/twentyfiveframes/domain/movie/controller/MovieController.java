@@ -26,10 +26,10 @@ public class MovieController {
 
     // 영화 등록
     @PostMapping
-    public ResponseEntity<MovieResponseDto.Save> saveMovie(
-            @AuthenticationPrincipal Long userId,
-            @Valid @RequestBody MovieRequestDto.Save dto) {
+    public ResponseEntity<MovieResponseDto.Save> saveMovie(@AuthenticationPrincipal Long userId,
+                                                           @Valid @RequestBody MovieRequestDto.Save dto) {
         MovieResponseDto.Save response = movieService.saveMovie(userId, dto);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -54,6 +54,9 @@ public class MovieController {
             @AuthenticationPrincipal Long userId,
             @PathVariable Long movieId,
             @Valid @RequestBody MovieRequestDto.Update dto) {
+    public ResponseEntity<String> updateMovie(@AuthenticationPrincipal Long userId,
+                                              @PathVariable("movieId") Long movieId,
+                                              @Valid @RequestBody MovieRequestDto.Update dto) {
         movieService.updateMovie(userId, movieId, dto);
         return ResponseEntity.ok("영화 정보가 수정되었습니다.");
     }
@@ -63,6 +66,8 @@ public class MovieController {
     public ResponseEntity<String> deleteMovie(
             @AuthenticationPrincipal Long userId,
             @PathVariable Long movieId) {
+    public ResponseEntity<String> deleteMovie(@AuthenticationPrincipal Long userId,
+                                              @PathVariable("movieId") Long movieId) {
         movieService.deleteMovie(userId, movieId);
         return ResponseEntity.ok("등록된 영화가 삭제되었습니다.");
     }

@@ -28,7 +28,6 @@ public class MovieResponseDto {
         private final String genre;
         private final Double averageRating;
 
-
         public static GetAll from(Movie movie) {
             Double averageRating = movie.getAverageRating();
             Double rounded = null;
@@ -59,7 +58,7 @@ public class MovieResponseDto {
         private final Integer runningTime;
         private final LocalDate releaseDate;
         private final Double averageRating;
-        //todo: review list 반환
+        private final Long totalViews;
         @JsonFormat(pattern = "yyyy-MM-dd")
         private final LocalDateTime createdAt;
         @JsonFormat(pattern = "yyyy-MM-dd")
@@ -67,7 +66,7 @@ public class MovieResponseDto {
 
         private final List<ReviewWithLikeDto> reviews;
 
-        public static Get from(Movie movie, List<ReviewWithLikeDto> reviews) {
+        public static Get from(Movie movie, Long total, List<ReviewWithLikeDto> reviews) {
             return new Get(
                     movie.getId(),
                     movie.getTitle(),
@@ -78,7 +77,7 @@ public class MovieResponseDto {
                     movie.getRunningTime(),
                     movie.getReleaseDate(),
                     movie.getAverageRating(),
-                    //todo 리뷰list
+                    total,
                     movie.getCreatedAt(),
                     movie.getUpdatedAt(),
                     reviews

@@ -2,11 +2,16 @@ package com.example.twentyfiveframes.domain.review.controller;
 
 import com.example.twentyfiveframes.domain.review.dto.MessageResponseDto;
 import com.example.twentyfiveframes.domain.review.dto.ReviewRequestDto;
+import com.example.twentyfiveframes.domain.review.dto.ReviewResponseDto;
 import com.example.twentyfiveframes.domain.review.dto.ReviewUpdateRequestDto;
 import com.example.twentyfiveframes.domain.review.service.ReviewService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -42,6 +47,16 @@ public class ReviewController {
                                              @AuthenticationPrincipal Long userId) {
         reviewService.deleteReview(reviewId, userId);
         return ResponseEntity.noContent().build(); // 204 No Content
+    }
+
+    // 4. 영화별 리뷰 조회 (누구나 접근 가능)
+    @GetMapping("/movie/{movieId}")
+    public ResponseEntity<Page<ReviewResponseDto>> getReviewsByMovie(
+            @PathVariable Long movieId,
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        Page<ReviewResponseDto> response = reviewService.getReviewsByMovie(movieId, pageable);
+        return ResponseEntity.ok(response);
     }
 
     // 5. 리뷰 좋아요 등록
