@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -111,6 +112,7 @@ public class MovieServiceImpl implements MovieService{
 
     // 영화 수정
     @Override
+    @Transactional
     public void updateMovie(Long userId, Long movieId, MovieRequestDto.Update dto) {
         Movie movie = getMovieById(movieId);
 
@@ -123,6 +125,7 @@ public class MovieServiceImpl implements MovieService{
 
     // 영화 삭제
     @Override
+    @Transactional
     public void deleteMovie(Long userId, Long movieId) {
         Movie movie = getMovieById(movieId);
 

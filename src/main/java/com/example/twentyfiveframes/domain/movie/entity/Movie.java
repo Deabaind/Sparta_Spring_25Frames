@@ -68,7 +68,7 @@ public class Movie extends BaseEntity {
     public void update(MovieRequestDto.Update dto) {
         if (dto.getTitle() != null) this.title = dto.getTitle();
         if (dto.getSummary() != null) this.summary = dto.getSummary();
-        if (dto.getDirector() != null) this.director = dto.getTitle();
+        if (dto.getDirector() != null) this.director = dto.getDirector();
         if (dto.getAgeLimit() != null) this.ageLimit = dto.getAgeLimit();
         if (dto.getGenre() != null) this.genre = dto.getGenre();
         if (dto.getRunningTime() != null) this.runningTime = dto.getRunningTime();
