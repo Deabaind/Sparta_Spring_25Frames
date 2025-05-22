@@ -1,7 +1,7 @@
 package com.example.twentyfiveframes.filter;
 
 import com.example.twentyfiveframes.security.CustomUserDetails;
-import com.example.twentyfiveframes.security.JwtService;
+import com.example.twentyfiveframes.domain.auth.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -45,6 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     // 인증 객체 재등록
     private void setAuthentication(String token, HttpServletRequest request) {
         CustomUserDetails userDetails = jwtService.getUserDetails(token);
+
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails.getUser().getId(), null, userDetails.getAuthorities());
 
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
