@@ -28,6 +28,8 @@ public class ViewCountScheduler {
             });
         }
 
+        movieViewCountService.clear(); // 저장후 캐시 초기화
+
     }
 
 
