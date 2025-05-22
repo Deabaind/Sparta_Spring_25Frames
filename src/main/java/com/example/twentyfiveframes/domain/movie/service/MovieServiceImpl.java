@@ -1,5 +1,7 @@
 package com.example.twentyfiveframes.domain.movie.service;
 
+import com.example.twentyfiveframes.domain.CustomException;
+import com.example.twentyfiveframes.domain.ErrorCode;
 import com.example.twentyfiveframes.domain.movie.dto.MovieRequestDto;
 import com.example.twentyfiveframes.domain.movie.dto.MovieResponseDto;
 import com.example.twentyfiveframes.domain.movie.entity.Movie;
@@ -40,7 +42,7 @@ public class MovieServiceImpl implements MovieService{
     @Override
     public Movie getMovieById(Long movieId) {
         return movieRepository.findById(movieId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 영화입니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.MOVIE_NOT_FOUND));
     }
 
     // 영화 등록
@@ -48,7 +50,7 @@ public class MovieServiceImpl implements MovieService{
     public MovieResponseDto.Save saveMovie(Long userId, MovieRequestDto.Save dto) {
         User authUser = userService.getUserByUserId(userId);
         if(!authUser.getRole().equals(UserType.ROLE_PROVIDER)) {
-            throw new AccessDeniedException("영화를 등록할 권한이 없습니다.");
+            throw new CustomException(ErrorCode.MOVIE_ACCESS_DENIED);
         }
 
         Movie movie = new Movie(authUser, dto);
@@ -117,7 +119,7 @@ public class MovieServiceImpl implements MovieService{
         Movie movie = getMovieById(movieId);
 
         if(!userId.equals(movie.getUser().getId())) {
-            throw new AccessDeniedException("영화 수정 권한이 없습니다.");
+            throw new CustomException(ErrorCode.MOVIE_UPDATE_DENIED);
         }
 
         movie.update(dto);
@@ -130,12 +132,10 @@ public class MovieServiceImpl implements MovieService{
         Movie movie = getMovieById(movieId);
 
         if(!userId.equals(movie.getUser().getId())) {
-            throw new AccessDeniedException("영화 삭제 권한이 없습니다.");
+            throw new CustomException(ErrorCode.MOVIE_DELETE_DENIED);
         }
 
         movie.softDelete();
     }
-
-
 
 }
