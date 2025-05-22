@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthRequestDto {
 
     @Getter
- @NoArgsConstructor(force = true)
+    @NoArgsConstructor(force = true)
     @RequiredArgsConstructor
     public static class Signup {
 
