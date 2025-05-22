@@ -50,7 +50,7 @@ public class MovieController {
     // 영화 수정
     @PatchMapping("/{movieId}")
     public ResponseEntity<String> updateMovie(@AuthenticationPrincipal Long userId,
-                                              @PathVariable Long movieId,
+                                              @PathVariable("movieId") Long movieId,
                                               @Valid @RequestBody MovieRequestDto.Update dto) {
         movieService.updateMovie(userId, movieId, dto);
 
@@ -60,7 +60,7 @@ public class MovieController {
     // 영화 삭제
     @DeleteMapping("/{movieId}")
     public ResponseEntity<String> deleteMovie(@AuthenticationPrincipal Long userId,
-                                              @PathVariable Long movieId) {
+                                              @PathVariable("movieId") Long movieId) {
         movieService.deleteMovie(userId, movieId);
 
         return ResponseEntity.status(HttpStatus.OK).body("등록된 영화가 삭제되었습니다.");
