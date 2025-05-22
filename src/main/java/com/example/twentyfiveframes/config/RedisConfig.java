@@ -45,21 +45,6 @@ public class RedisConfig {
         return template;
     }
 
-    // 블랙리스트 access Token 저장하는 redis
-    @Bean
-    public RedisConnectionFactory accessRedisConnectionFactory() {
-        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration("localhost", 6380);
-        config.setDatabase(3);
-        return new LettuceConnectionFactory(config);
-    }
-
-    @Bean(name = "accessRedisTemplate")
-    public RedisTemplate<String, String> accessRedisTemplate() {
-        RedisTemplate<String, String> template = new RedisTemplate<>();
-        template.setConnectionFactory(accessRedisConnectionFactory());
-        return template;
-    }
-
     @Bean
     public RedisConnectionFactory viewCountConnectionFactory() {
         RedisStandaloneConfiguration config = new RedisStandaloneConfiguration("localhost", 6380);
@@ -73,6 +58,21 @@ public class RedisConfig {
         template.setConnectionFactory(viewCountConnectionFactory());
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(new GenericToStringSerializer<>(Long.class));
+        return template;
+    }
+
+    // 블랙리스트 access Token 저장하는 redis
+    @Bean
+    public RedisConnectionFactory accessRedisConnectionFactory() {
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration("localhost", 6380);
+        config.setDatabase(3);
+        return new LettuceConnectionFactory(config);
+    }
+
+    @Bean(name = "accessRedisTemplate")
+    public RedisTemplate<String, String> accessRedisTemplate() {
+        RedisTemplate<String, String> template = new RedisTemplate<>();
+        template.setConnectionFactory(accessRedisConnectionFactory());
         return template;
     }
 }
