@@ -23,7 +23,7 @@ public class ViewCountScheduler {
 
         Set<String> keys = redisTemplate.keys("movie:views:*");
 
-        if (keys == null || keys.isEmpty()) { return;}
+        if (keys == null || keys.isEmpty()) {return;}
 
         for (String key : keys) {
             Long movieId = Long.valueOf(key.replace("movie:views:",""));
@@ -38,6 +38,5 @@ public class ViewCountScheduler {
         }
 
     }
-
 
 }
