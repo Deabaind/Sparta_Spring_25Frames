@@ -4,9 +4,13 @@ import com.example.twentyfiveframes.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Getter
+@SQLDelete(sql = "UPDATE movie_db.user SET deleted_at = now() WHERE id = ?")
+@SQLRestriction("deleted_at is null")
 @NoArgsConstructor
 public class User extends BaseEntity {
 
@@ -23,7 +27,7 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 20)
     private String username;
 
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 20)
     @Enumerated(EnumType.STRING)
     private UserType role;
 

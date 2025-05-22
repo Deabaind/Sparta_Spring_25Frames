@@ -11,7 +11,7 @@ public class UserResponseDto {
     @Getter
     @RequiredArgsConstructor
     public static class Signup {
-
+        private final String message;
         private final Long userId;
     }
 

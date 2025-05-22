@@ -1,6 +1,7 @@
 package com.example.twentyfiveframes.domain.user.service;
 
 import com.example.twentyfiveframes.domain.auth.dto.AuthRequestDto;
+import com.example.twentyfiveframes.domain.user.dto.UserRequestDto;
 import com.example.twentyfiveframes.domain.user.dto.UserResponseDto;
 import com.example.twentyfiveframes.domain.user.entity.User;
 import com.example.twentyfiveframes.domain.user.entity.UserType;
@@ -36,7 +37,7 @@ public class UserServiceImplTest {
     @DisplayName("유저를 DB에 저장한다.")
     public void userSave() {
         // given
-        AuthRequestDto.Signup signupDto = new AuthRequestDto.Signup(
+        UserRequestDto.Signup signupDto = new UserRequestDto.Signup(
                 "testEmail@email.com",
                 "QWERASDF1",
                 "누구세용",

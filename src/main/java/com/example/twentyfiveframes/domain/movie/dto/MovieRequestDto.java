@@ -1,12 +1,14 @@
 package com.example.twentyfiveframes.domain.movie.dto;
 
 import com.example.twentyfiveframes.domain.movie.entity.MovieGenre;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
@@ -32,24 +34,39 @@ public class MovieRequestDto {
         @NotNull(message = "관람 제한 연령은 필수 입력 항목입니다.")
         private Integer ageLimit; //0,12,15,18 연령제한
 
-        @NotBlank(message = "영화 장르는 필수 입력 항목입니다.")
-        private MovieGenre genre; //이넘으로 변경
+        @NotNull(message = "영화 장르는 필수 입력 항목입니다.")
+        private MovieGenre genre;
 
-        @NotBlank(message = "영화 장르는 필수 입력 항목입니다.")
+        @NotNull(message = "관람시간은 필수 입력 항목입니다.")
         private Integer runningTime;
 
         @NotNull(message = "영화 개봉일은 필수 입력 항목입니다.")
-        @DateTimeFormat(pattern = "yyyy-MM-dd")
+        @JsonFormat(pattern = "yyyy-MM-dd")
         private LocalDate releaseDate;
     }
 
 
     // 영화 수정
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Update {
 
-    // 영화 전체 조회
+        @Size(max = 30, message = "30자 이하로 입력할 수 있습니다.")
+        private String title;
 
-    // 영화 단건 조회
+        private String summary;
 
-    // 영화 삭제
+        @Size(max = 30, message = "30자 이하로 입력할 수 있습니다.")
+        private String director;
+
+        private Integer ageLimit; //0,12,15,18 연령제한
+
+        private MovieGenre genre;
+
+        private Integer runningTime;
+
+    }
+
 
 }

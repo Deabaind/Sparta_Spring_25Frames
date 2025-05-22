@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 import java.time.LocalDate;
 
@@ -16,14 +17,16 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Where(clause = "deleted_at IS NULL")
 public class Movie extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // todo: User 엔티티와 연관 관계
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(nullable = false, length = 30)
     private String title;
@@ -46,13 +49,13 @@ public class Movie extends BaseEntity {
     @Column(nullable = false)
     private LocalDate releaseDate;
 
-    private Double averageRating; //todo 리뷰를 활용해 평균평점 계산하기, 리뷰 repository 추가 후 반영
+    private Double averageRating;
 
     @Column(nullable = false)
     private Long totalViews = 0L;
 
     public Movie(User user, MovieRequestDto.Save dto) {
-        this.userId = user.getId();
+        this.user = user;
         this.title = dto.getTitle();
         this.summary = dto.getSummary();
         this.director = dto.getDirector();
@@ -62,4 +65,15 @@ public class Movie extends BaseEntity {
         this.releaseDate = dto.getReleaseDate();
     }
 
+    public void update(MovieRequestDto.Update dto) {
+        if (dto.getTitle() != null) this.title = dto.getTitle();
+        if (dto.getSummary() != null) this.summary = dto.getSummary();
+        if (dto.getDirector() != null) this.director = dto.getDirector();
+        if (dto.getAgeLimit() != null) this.ageLimit = dto.getAgeLimit();
+        if (dto.getGenre() != null) this.genre = dto.getGenre();
+        if (dto.getRunningTime() != null) this.runningTime = dto.getRunningTime();
+    }
+    public void updateAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
+    }
 }
