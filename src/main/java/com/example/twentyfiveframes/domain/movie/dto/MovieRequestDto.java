@@ -50,7 +50,7 @@ public class MovieRequestDto {
     // 영화 수정
     @Getter
     @AllArgsConstructor
-    @NoArgsConstructor
+    @NoArgsConstructor(force = true)
     public static class Update {
 
         @Size(max = 30, message = "30자 이하로 입력할 수 있습니다.")
