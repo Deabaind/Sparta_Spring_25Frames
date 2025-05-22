@@ -5,6 +5,7 @@ import com.example.twentyfiveframes.domain.movie.service.MovieService;
 import com.example.twentyfiveframes.domain.CustomException;
 import com.example.twentyfiveframes.domain.ErrorCode;
 import com.example.twentyfiveframes.domain.review.dto.ReviewRequestDto;
+import com.example.twentyfiveframes.domain.review.dto.ReviewResponseDto;
 import com.example.twentyfiveframes.domain.review.dto.ReviewUpdateRequestDto;
 import com.example.twentyfiveframes.domain.review.entity.Review;
 import com.example.twentyfiveframes.domain.review.repository.ReviewRepository;
@@ -14,6 +15,8 @@ import com.example.twentyfiveframes.domain.user.entity.User;
 import com.example.twentyfiveframes.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -96,6 +99,14 @@ public class ReviewService {
         reviewLikeRepository.save(like);
     }
 
-
+    /**
+     * 특정 영화의 리뷰 목록 조회
+     */
+    @Transactional(readOnly = true)
+    public Page<ReviewResponseDto> getReviewsByMovie(Long movieId, Pageable pageable) {
+        Movie movie = movieService.getMovieById(movieId);
+        return reviewRepository.findByMovie(movie, pageable)
+                .map(ReviewResponseDto::from);
+    }
 
 }

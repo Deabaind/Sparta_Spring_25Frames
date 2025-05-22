@@ -36,3 +36,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+.DS_Store
+.application-example
+.application.yml
+.docker-compose.yml
