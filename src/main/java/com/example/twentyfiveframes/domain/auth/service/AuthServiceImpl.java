@@ -6,7 +6,6 @@ import com.example.twentyfiveframes.domain.user.dto.UserRequestDto;
 import com.example.twentyfiveframes.domain.user.dto.UserResponseDto;
 import com.example.twentyfiveframes.domain.user.entity.User;
 import com.example.twentyfiveframes.domain.user.service.UserService;
-import com.example.twentyfiveframes.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

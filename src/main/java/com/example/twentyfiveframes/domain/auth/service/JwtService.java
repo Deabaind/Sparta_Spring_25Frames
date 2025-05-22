@@ -1,13 +1,15 @@
-package com.example.twentyfiveframes.security;
+package com.example.twentyfiveframes.domain.auth.service;
 
 import com.example.twentyfiveframes.domain.user.entity.User;
 import com.example.twentyfiveframes.domain.user.service.UserService;
+import com.example.twentyfiveframes.security.CustomUserDetails;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -15,24 +17,28 @@ import org.springframework.util.StringUtils;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @Getter
 @Service
+@RequiredArgsConstructor
 public class JwtService {
 
     private final UserService userService;
-
-    public JwtService(UserService userService) {
-        this.userService = userService;
-    }
+    private final AuthRedisService authRedisService;
 
     @Value("${jwt.secretKey}")
     private String secretKeyString;
 
     private Key secretKey;
 
-    private final long accessTokenValidMillionSecond = 600000;
-    private final long refreshTokenValidMillionSecond = 36000000;
+    // 10 / 분 60 / 초 1000
+    private final long accessTokenValidMillionSecond = 10 * 60 * 1000;
+
+    // 10 / 시간 60 / 분 60 / 초 1000
+    private final long refreshTokenValidMillionSecond = 10 * 60 * 60 * 1000;
+
+    private final long refreshTokenValidHours = refreshTokenValidMillionSecond / 3600000;
 
     // 암호화 키 생성
     @PostConstruct
@@ -62,17 +68,24 @@ public class JwtService {
     public String createRefreshToken(Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         User user = userDetails.getUser();
-
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + refreshTokenValidMillionSecond);
 
-        return Jwts.builder()
+        String refreshToken = Jwts.builder()
                 .setSubject(user.getId().toString())
                 .claim("tokenType", "refresh")
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(secretKey, SignatureAlgorithm.HS512)
                 .compact();
+
+        authRedisService.save(
+                user.getId().toString(),
+                refreshToken,
+                refreshTokenValidHours,
+                TimeUnit.HOURS
+        );
+        return refreshToken;
     }
 
     // accessToken 재발급
@@ -96,19 +109,28 @@ public class JwtService {
 
     // refreshToken 재발급
     public String createRefreshToken(String token) {
-        CustomUserDetails userDetails = getUserDetails(token);
-        User user = userDetails.getUser();
+        String userId = getUserId(token);
 
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + refreshTokenValidMillionSecond);
 
-        return Jwts.builder()
-                .setSubject(user.getId().toString())
+        String refreshToken = Jwts.builder()
+                .setSubject(userId)
                 .claim("tokenType", "refresh")
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(secretKey, SignatureAlgorithm.HS512)
                 .compact();
+
+        // redis에 새로운 refreshToken 저장
+        authRedisService.update(
+                userId,
+                refreshToken,
+                refreshTokenValidHours,
+                TimeUnit.HOURS
+        );
+
+        return refreshToken;
     }
 
     // 요청 헤더에서 accessToken 가져오기
@@ -144,11 +166,16 @@ public class JwtService {
 
     // accessToken 검증
     public boolean validateAccessToken(String token) {
+
         if (!validateToken(token)) {
-            // todo 예외 변경 필요함
             return false;
         }
-        // todo refresh Token 검증 코드
+
+        String userId = getUserId(token);
+        if (authRedisService.valid(userId, token)) {
+            return false;
+        }
+
         return true;
     }
 
@@ -162,5 +189,15 @@ public class JwtService {
                 .getSubject();
         User user = userService.getUserByUserId(Long.valueOf(userId));
         return new CustomUserDetails(user);
+    }
+
+    // token에서 String 타입으로 userId 꺼내기
+    public String getUserId(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 }
