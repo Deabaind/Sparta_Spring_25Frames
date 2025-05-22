@@ -47,7 +47,7 @@ public class RedisConfig {
     @Bean
     public RedisConnectionFactory accessRedisConnectionFactory() {
         RedisStandaloneConfiguration config = new RedisStandaloneConfiguration("localhost", 6380);
-        config.setDatabase(2);
+        config.setDatabase(3);
         return new LettuceConnectionFactory(config);
     }
 

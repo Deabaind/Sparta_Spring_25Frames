@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
                 signupDto.getPassword(),
                 signupDto.getUsername(),
                 signupDto.getRole()));
-        return new UserResponseDto.Signup("25Frames에 오신 걸 환영합니다", user.getId());
+        return new UserResponseDto.Signup("25Frames에 오신 것을 환영합니다", user.getId());
     }
 
     // user 조회
