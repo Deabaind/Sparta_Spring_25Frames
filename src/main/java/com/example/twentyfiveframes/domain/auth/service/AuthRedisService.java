@@ -11,26 +11,38 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class AuthRedisService {
 
-    @Qualifier("authRedisTemplate")
-    private final RedisTemplate<String, String> redisTemplate;
+    @Qualifier("refreshRedisTemplate")
+    private final RedisTemplate<String, String> refreshRedisTemplate;
+
+    @Qualifier("accessRedisTemplate")
+    private final RedisTemplate<String, String> accessRedisTemplate;
 
     private static final String PREFIX = "refresh:user:";
+    private static final String BLACKLIST = "blackList:";
 
     public void save(String userId, String refreshToken, long timeout, TimeUnit unit) {
-        redisTemplate.opsForValue().set(PREFIX + userId, refreshToken, timeout, unit);
+        refreshRedisTemplate.opsForValue().set(PREFIX + userId, refreshToken, timeout, unit);
     }
 
     public void update(String userId, String refreshToken, long timeout, TimeUnit unit) {
-        redisTemplate.delete(PREFIX + userId);
-        redisTemplate.opsForValue().set(PREFIX + userId, refreshToken, timeout, unit);
+        refreshRedisTemplate.delete(PREFIX + userId);
+        refreshRedisTemplate.opsForValue().set(PREFIX + userId, refreshToken, timeout, unit);
     }
 
     public void delete(String userId) {
-        redisTemplate.delete(PREFIX + userId);
+        refreshRedisTemplate.delete(PREFIX + userId);
     }
 
-    public boolean valid(String userId, String token) {
-        String storedToken = redisTemplate.opsForValue().get(PREFIX + userId);
+    public boolean validRefreshToken(String userId, String token) {
+        String storedToken = refreshRedisTemplate.opsForValue().get(PREFIX + userId);
         return storedToken != null && storedToken.equals(token);
+    }
+
+    public void blackList(String accessToken, long timeout, TimeUnit unit) {
+        accessRedisTemplate.opsForValue().set(BLACKLIST + accessToken, "logout", timeout, unit);
+    }
+
+    public boolean validAccessToken(String accessToken) {
+        return accessRedisTemplate.hasKey(BLACKLIST + accessToken);
     }
 }
