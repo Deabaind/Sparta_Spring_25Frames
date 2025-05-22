@@ -21,12 +21,12 @@ public class ViewCountScheduler {
     @Scheduled(cron = "0 0 0 * * *")
     public void updateTotalViewsFromRedis() {
 
-        Set<String> keys = redisTemplate.keys("movie:views:*");
+        Set<String> keys = redisTemplate.keys("movie:viewCount:*");
 
         if (keys == null || keys.isEmpty()) {return;}
 
         for (String key : keys) {
-            Long movieId = Long.valueOf(key.replace("movie:views:",""));
+            Long movieId = Long.valueOf(key.replace("movie:viewCount:",""));
             Long addCount = redisTemplate.opsForValue().get(key);
 
             if (addCount != null) {
