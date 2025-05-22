@@ -34,6 +34,7 @@ public class MovieServiceImpl implements MovieService{
     private final ReviewRepository reviewRepository;
     private final ReviewLikeRepository reviewLikeRepository;
     private final UserService userService;
+    private final MovieViewCountRedisService movieViewCountRedisService;
 
     // movieId로 Movie 조회
     @Override
@@ -70,6 +71,13 @@ public class MovieServiceImpl implements MovieService{
         // 1. 영화 조회
         Movie movie = getMovieById(movieId);
 
+        // redis 캐시에 저장
+        // 1-1 캐시에 조회수 + 1
+        movieViewCountRedisService.increaseViewCount(movieId);
+
+        // 1-2 DB 누적 조회수 + 오늘 캐시 조회수
+        long total = movie.getTotalViews() + movieViewCountRedisService.getViewCount(movieId);
+
         // 2. 해당 영화의 모든 리뷰 조회
         List<Review> reviews = reviewRepository.findAllByMovieId(movieId);
         List<Long> reviewIds = reviews.stream()
@@ -98,20 +106,8 @@ public class MovieServiceImpl implements MovieService{
                 .collect(Collectors.toList());
 
         // 5. 최종 응답
-        return new MovieResponseDto.Get(
-                movie.getId(),
-                movie.getTitle(),
-                movie.getSummary(),
-                movie.getDirector(),
-                movie.getAgeLimit(),
-                movie.getGenre().toString(),
-                movie.getRunningTime(),
-                movie.getReleaseDate(),
-                movie.getAverageRating(),
-                movie.getCreatedAt(),
-                movie.getUpdatedAt(),
-                reviewDtos
-        );
+          return MovieResponseDto.Get.from(movie, total, reviewDtos);
+
     }
 
     // 영화 수정
