@@ -1,4 +1,4 @@
-package com.example.twentyfiveframes.domain;
+package com.example.twentyfiveframes.config;
 
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +13,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 @EnableCaching
 public class RedisConfig {
 
+    // cashe 관리하는 redis
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration config = new RedisStandaloneConfiguration("localhost", 6380);
@@ -27,17 +28,33 @@ public class RedisConfig {
         return template;
     }
 
+    // 유지중인 refresh Token 저장하는 redis
     @Bean
-    public RedisConnectionFactory authRedisConnectionFactory() {
+    public RedisConnectionFactory refreshRedisConnectionFactory() {
         RedisStandaloneConfiguration config = new RedisStandaloneConfiguration("localhost", 6380);
         config.setDatabase(1);
         return new LettuceConnectionFactory(config);
     }
 
-    @Bean(name = "authRedisTemplate")
-    public RedisTemplate<String, String> authRedisTemplate() {
+    @Bean(name = "refreshRedisTemplate")
+    public RedisTemplate<String, String> refreshRedisTemplate() {
         RedisTemplate<String, String> template = new RedisTemplate<>();
-        template.setConnectionFactory(authRedisConnectionFactory());
+        template.setConnectionFactory(refreshRedisConnectionFactory());
+        return template;
+    }
+
+    // 블랙리스트 access Token 저장하는 redis
+    @Bean
+    public RedisConnectionFactory accessRedisConnectionFactory() {
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration("localhost", 6380);
+        config.setDatabase(2);
+        return new LettuceConnectionFactory(config);
+    }
+
+    @Bean(name = "accessRedisTemplate")
+    public RedisTemplate<String, String> accessRedisTemplate() {
+        RedisTemplate<String, String> template = new RedisTemplate<>();
+        template.setConnectionFactory(accessRedisConnectionFactory());
         return template;
     }
 }

@@ -166,13 +166,14 @@ public class JwtService {
 
     // accessToken 검증
     public boolean validateAccessToken(String token) {
-
         if (!validateToken(token)) {
             return false;
         }
-
+        if (authRedisService.validAccessToken(token)) {
+            return false;
+        }
         String userId = getUserId(token);
-        if (authRedisService.valid(userId, token)) {
+        if (authRedisService.validRefreshToken(userId, token)) {
             return false;
         }
 
@@ -199,5 +200,18 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    public void logout(Long userId, HttpServletRequest request) {
+        authRedisService.delete(userId.toString());
+        String refreshToken = resolveAccessToken(request);
+        Date expiration = Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(refreshToken)
+                .getBody()
+                .getExpiration();
+        long time = expiration.getTime();
+        authRedisService.blackList(refreshToken, time, TimeUnit.MINUTES);
     }
 }
