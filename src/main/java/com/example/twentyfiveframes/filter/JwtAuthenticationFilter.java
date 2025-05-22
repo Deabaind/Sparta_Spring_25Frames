@@ -59,7 +59,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String newRefreshToken = jwtService.createRefreshToken(refreshToken);
 
         response.setHeader("Authorization", newAccessToken);
-        response.setHeader("Authorization-refresh", "Bearer" + newRefreshToken);
+        response.setHeader("Authorization-refresh", "Bearer " + newRefreshToken);
 
         return newAccessToken;
     }

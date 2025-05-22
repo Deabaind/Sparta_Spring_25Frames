@@ -32,7 +32,7 @@ public class JwtService {
     private Key secretKey;
 
     private final long accessTokenValidMillionSecond = 600000;
-    private final long refreshTokenValidMillionSecond = 3600000;
+    private final long refreshTokenValidMillionSecond = 36000000;
 
     // 암호화 키 생성
     @PostConstruct
@@ -135,7 +135,7 @@ public class JwtService {
             Jwts.parserBuilder()
                     .setSigningKey(secretKey)
                     .build()
-                    .parseClaimsJwt(token);
+                    .parseClaimsJws(token);
             return true;
         } catch (Exception e) {
             return false;
@@ -144,14 +144,12 @@ public class JwtService {
 
     // accessToken 검증
     public boolean validateAccessToken(String token) {
-        try {
-            // todo refresh Token 검증 코드
-            validateToken(token);
-
-            return true;
-        } catch (Exception e) {
+        if (!validateToken(token)) {
+            // todo 예외 변경 필요함
             return false;
         }
+        // todo refresh Token 검증 코드
+        return true;
     }
 
     // token에서 user 꺼내기

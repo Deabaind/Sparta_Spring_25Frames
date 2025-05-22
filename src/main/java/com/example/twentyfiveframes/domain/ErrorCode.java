@@ -8,6 +8,9 @@ public enum ErrorCode {
     REVIEW_NOT_FOUND("REVIEW-001", "리뷰를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     REVIEW_FORBIDDEN("REVIEW-002", "본인의 리뷰만 수정/삭제할 수 있습니다.", HttpStatus.FORBIDDEN),
     USER_NOT_FOUND("USER-001", "존재하지 않는 사용자입니다.", HttpStatus.NOT_FOUND),
+    FORBIDDEN("COMMON-403", "권한이 없습니다.", HttpStatus.FORBIDDEN),
+    INVALID_RATING("REVIEW-004", "평점은 1점에서 5점 사이여야 합니다.", HttpStatus.BAD_REQUEST),
+    UNAUTHORIZED("COMMON-401", "로그인이 필요합니다.", HttpStatus.UNAUTHORIZED),
     MOVIE_NOT_FOUND("MOVIE-001", "존재하지 않는 영화입니다.", HttpStatus.NOT_FOUND),
     ALREADY_LIKED("REVIEW-003", "이미 좋아요를 눌렀습니다.", HttpStatus.BAD_REQUEST);
 
