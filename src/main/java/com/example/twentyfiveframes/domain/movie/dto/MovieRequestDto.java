@@ -18,6 +18,7 @@ public class MovieRequestDto {
     // 영화 등록
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor(force = true)
     public static class Save {
 
         @NotBlank(message = "영화 제목은 필수 입력 항목입니다.")

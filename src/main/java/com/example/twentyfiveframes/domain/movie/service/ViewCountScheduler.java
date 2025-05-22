@@ -15,6 +15,7 @@ public class ViewCountScheduler {
     private final MovieRepository movieRepository;
     private final MovieViewCountService movieViewCountService;
 
+    // In-memory 캐시에서 DB로 저장
     @Scheduled(cron = "0 0 0 * * *") // 매일 자정 자동 실행
     public void updateTotalViews() {
         Map<Long, Long> viewCount = movieViewCountService.getAllViewCounts();
@@ -29,6 +30,11 @@ public class ViewCountScheduler {
         }
 
         movieViewCountService.clear(); // 저장후 캐시 초기화
+    }
+
+    // redis에서 DB로 저장
+    @Scheduled(cron = "0 0 0 * * *")
+    public void updateTotalViewsFromRedis() {
 
     }
 

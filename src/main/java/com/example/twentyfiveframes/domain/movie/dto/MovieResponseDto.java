@@ -28,7 +28,6 @@ public class MovieResponseDto {
         private final String genre;
         private final Double averageRating;
 
-
         public static GetAll from(Movie movie) {
             Double averageRating = movie.getAverageRating();
             Double rounded = null;
