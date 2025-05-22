@@ -58,6 +58,7 @@ public class ReviewService {
             throw new CustomException(ErrorCode.REVIEW_FORBIDDEN);
         }
 
+
         review.update(dto.getRating(), dto.getContent());
     }
     /**
@@ -70,9 +71,13 @@ public class ReviewService {
                 .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND));
 
         if (!review.getUser().getId().equals(userId)) {
-            throw new CustomException(ErrorCode.REVIEW_FORBIDDEN);
+            throw new CustomException(ErrorCode.FORBIDDEN);
         }
 
+        // 먼저 review_like 삭제
+        reviewLikeRepository.deleteByReviewId(reviewId);
+
+        // 이후 리뷰 삭제
         reviewRepository.delete(review);
     }
     //리뷰 좋아요 등록
