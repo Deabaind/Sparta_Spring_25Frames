@@ -4,6 +4,7 @@ import com.example.twentyfiveframes.domain.auth.dto.AuthRequestDto;
 import com.example.twentyfiveframes.domain.auth.dto.AuthResponseDto;
 import com.example.twentyfiveframes.domain.auth.service.AuthService;
 import com.example.twentyfiveframes.domain.user.dto.UserResponseDto;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,13 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto.Login> login(@Valid @RequestBody AuthRequestDto.Login login) {
         return ResponseEntity.status(HttpStatus.OK).body(authService.login(login));
+    }
+
+    // 로그아웃
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@AuthenticationPrincipal Long userId, HttpServletRequest request) {
+        authService.logout(userId, request);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // 탈퇴

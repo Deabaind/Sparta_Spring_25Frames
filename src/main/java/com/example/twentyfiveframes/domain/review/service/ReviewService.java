@@ -45,8 +45,10 @@ public class ReviewService {
 
         // 평균 평점 계산 후 영화에 반영
         Double avgRating = reviewRepository.findAverageRatingByMovieId(movie.getId());
+        Double rounded;
         if (avgRating != null) {
-            movie.updateAverageRating(avgRating);
+            rounded = Math.round(avgRating * 10) / 10.0;
+            movie.updateAverageRating(rounded);
         }
     }
     /**

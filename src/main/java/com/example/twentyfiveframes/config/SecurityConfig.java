@@ -50,6 +50,8 @@ public class SecurityConfig {
                         .disable())
                 .formLogin(formLogin -> formLogin
                         .disable())
+                .logout(logout -> logout
+                        .disable())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth

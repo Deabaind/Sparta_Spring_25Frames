@@ -14,7 +14,8 @@ public class AuthRequestDto {
     public static class Signup {
 
         @Email(message = "올바른 이메일 형식이 아닙니다.")
-        @NotBlank(message = "이메일는 필수 입력 항목입니다.")
+        @Size(max = 30, message = "30자 이하로 입력할 수 있습니다.")
+        @NotBlank(message = "이메일은 필수 입력 항목입니다.")
         private final String email;
 
         @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)[a-zA-Z0-9]{8,20}$",

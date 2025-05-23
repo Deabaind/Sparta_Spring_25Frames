@@ -6,6 +6,7 @@ import com.example.twentyfiveframes.domain.user.dto.UserRequestDto;
 import com.example.twentyfiveframes.domain.user.dto.UserResponseDto;
 import com.example.twentyfiveframes.domain.user.entity.User;
 import com.example.twentyfiveframes.domain.user.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -53,6 +54,10 @@ public class AuthServiceImpl implements AuthService {
     }
 
     // 로그아웃
+    @Override
+    public void logout(Long userId, HttpServletRequest request) {
+        jwtService.logout(userId, request);
+    }
 
     // 탈퇴
     @Override
