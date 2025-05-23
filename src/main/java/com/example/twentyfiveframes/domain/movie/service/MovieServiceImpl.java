@@ -53,7 +53,7 @@ public class MovieServiceImpl implements MovieService{
             throw new CustomException(ErrorCode.MOVIE_ACCESS_DENIED);
         }
 
-        Movie movie = new Movie(authUser, dto);
+        Movie movie = dto.toEntity(authUser);
         movieRepository.save(movie);
 
         return new MovieResponseDto.Save("영화가 등록되었습니다.", movie.getId());

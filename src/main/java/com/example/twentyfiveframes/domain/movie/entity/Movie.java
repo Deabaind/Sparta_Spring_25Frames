@@ -54,15 +54,16 @@ public class Movie extends BaseEntity {
     @Column(nullable = false)
     private Long totalViews = 0L;
 
-    public Movie(User user, MovieRequestDto.Save dto) {
+    public Movie(User user, String title, String summary, String director, Integer ageLimit, MovieGenre genre,
+                 Integer runningTime, LocalDate releaseDate) {
         this.user = user;
-        this.title = dto.getTitle();
-        this.summary = dto.getSummary();
-        this.director = dto.getDirector();
-        this.ageLimit = dto.getAgeLimit();
-        this.genre = dto.getGenre();
-        this.runningTime = dto.getRunningTime();
-        this.releaseDate = dto.getReleaseDate();
+        this.title = title;
+        this.summary = summary;
+        this.director = director;
+        this.ageLimit = ageLimit;
+        this.genre = genre;
+        this.runningTime = runningTime;
+        this.releaseDate = releaseDate;
     }
 
     public void update(MovieRequestDto.Update dto) {
