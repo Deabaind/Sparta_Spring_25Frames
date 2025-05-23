@@ -72,6 +72,16 @@ public class MovieRequestDto {
 
         private Integer runningTime;
 
+        public void update(Movie movie) {
+            if (this.title != null) movie.updateTitle(title);
+            if (this.summary != null) movie.updateSummary(summary);
+            if (this.director != null) movie.updateDirector(director);
+            if (this.ageLimit != null) movie.updateAgeLimit(ageLimit);
+            if (this.genre != null) movie.updateMovieGenre(genre);
+            if (this.runningTime != null) movie.updateRunningTime(runningTime);
+
+        }
+
     }
 
 

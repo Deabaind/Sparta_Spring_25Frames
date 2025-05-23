@@ -122,7 +122,7 @@ public class MovieServiceImpl implements MovieService{
             throw new CustomException(ErrorCode.MOVIE_UPDATE_DENIED);
         }
 
-        movie.update(dto);
+        dto.update(movie);
     }
 
     // 영화 삭제
