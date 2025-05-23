@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ErrorResponse> requestExceptionHandler() {
+    public ResponseEntity<ErrorResponse> requestExceptionHandler(HttpMessageNotReadableException exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse("BAD_REQUEST" , "요청 형식이 잘못되었습니다. JSON 구조를 확인하세요." ));
