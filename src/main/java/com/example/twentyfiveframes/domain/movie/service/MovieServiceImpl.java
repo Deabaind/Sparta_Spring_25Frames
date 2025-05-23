@@ -1,9 +1,9 @@
 package com.example.twentyfiveframes.domain.movie.service;
 
-import com.example.twentyfiveframes.domain.movie.cache.KeywordCounter;
-import com.example.twentyfiveframes.domain.movie.dto.KeywordSearchResponseDto;
 import com.example.twentyfiveframes.domain.CustomException;
 import com.example.twentyfiveframes.domain.ErrorCode;
+import com.example.twentyfiveframes.domain.movie.cache.KeywordCounter;
+import com.example.twentyfiveframes.domain.movie.dto.KeywordSearchResponseDto;
 import com.example.twentyfiveframes.domain.movie.dto.MovieRequestDto;
 import com.example.twentyfiveframes.domain.movie.dto.MovieResponseDto;
 import com.example.twentyfiveframes.domain.movie.entity.Movie;
@@ -19,13 +19,10 @@ import com.example.twentyfiveframes.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import java.util.Map;
 import java.util.stream.Collectors;
 
