@@ -1,6 +1,7 @@
 package com.example.twentyfiveframes.domain.movie.service;
 
 import com.example.twentyfiveframes.domain.movie.cache.KeywordCounter;
+import com.example.twentyfiveframes.domain.movie.dto.KeywordSearchResponseDto;
 import com.example.twentyfiveframes.domain.movie.dto.MovieRequestDto;
 import com.example.twentyfiveframes.domain.movie.dto.MovieResponseDto;
 import com.example.twentyfiveframes.domain.movie.entity.Movie;
@@ -15,6 +16,7 @@ import com.example.twentyfiveframes.domain.user.entity.User;
 
 import com.example.twentyfiveframes.domain.user.entity.UserType;
 import com.example.twentyfiveframes.domain.user.service.UserService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +31,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class MovieServiceImpl implements MovieService{
+public class MovieServiceImpl implements MovieService {
 
     private final MovieRepository movieRepository;
     private final KeywordCounter keywordCounter;
@@ -49,7 +51,7 @@ public class MovieServiceImpl implements MovieService{
     @Override
     public MovieResponseDto.Save saveMovie(Long userId, MovieRequestDto.Save dto) {
         User authUser = userService.getUserByUserId(userId);
-        if(!authUser.getRole().equals(UserType.ROLE_PROVIDER)) {
+        if (!authUser.getRole().equals(UserType.ROLE_PROVIDER)) {
             throw new AccessDeniedException("영화를 등록할 권한이 없습니다.");
         }
 
@@ -108,40 +110,59 @@ public class MovieServiceImpl implements MovieService{
                 .collect(Collectors.toList());
 
         // 5. 최종 응답
-          return MovieResponseDto.Get.from(movie, total, reviewDtos);
+        return MovieResponseDto.Get.from(movie, total, reviewDtos);
 
     }
 
     // 영화 수정
+    @Override
+    @Transactional
+    public void updateMovie(Long userId, Long movieId, MovieRequestDto.Update dto) {
+        Movie movie = getMovieById(movieId);
+
+        if (!userId.equals(movie.getUser().getId())) {
+            throw new AccessDeniedException("영화 수정 권한이 없습니다.");
+        }
+
+        movie.update(dto);
+    }
 
     // 영화 삭제
+    @Override
+    @Transactional
+    public void deleteMovie(Long userId, Long movieId) {
+        Movie movie = getMovieById(movieId);
+        if (!userId.equals(movie.getUser().getId())) {
+            throw new AccessDeniedException("영화 삭제 권한이 없습니다.");
+        }
+        movie.softDelete();
+    }
 
     // 키워드 기반 영화 검색
     @Override
-    public List<Movie> search(String title, String genre) {
+    public List<KeywordSearchResponseDto> search(String title, String genre) {
         if (title != null) keywordCounter.record(title);
         if (genre != null) keywordCounter.record(genre);
 
         String t = (title == null || title.isBlank()) ? "" : title;
         String g = (genre == null || genre.isBlank()) ? "" : genre;
 
-        return movieRepository.search(t, g);
+        List<Movie> movieList = movieRepository.search(t, g);
+
+        List<KeywordSearchResponseDto> response = movieList.stream()
+                .map(movie -> new KeywordSearchResponseDto(
+                        movie.getId(),
+                        movie.getTitle(),
+                        movie.getGenre(),
+                        movie.getAverageRating()
+                ))
+                .collect(Collectors.toList());
+        return response;
     }
 
     // 인기 검색어 상위 N개 조회
     @Override
     public List<String> topKeywords(int limit) {
         return keywordCounter.topKeywords(limit);
-    }
-
-    // 오류로 인한 임시 생성
-    @Override
-    public void updateMovie(Long userId, Long movieId, MovieRequestDto.Update dto) {
-        throw new UnsupportedOperationException("임시");
-    }
-
-    @Override
-    public void deleteMovie(Long userId, Long movieId) {
-        throw new UnsupportedOperationException("임시");
     }
 }

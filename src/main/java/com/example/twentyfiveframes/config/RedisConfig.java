@@ -7,6 +7,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
@@ -74,5 +75,18 @@ public class RedisConfig {
         RedisTemplate<String, String> template = new RedisTemplate<>();
         template.setConnectionFactory(accessRedisConnectionFactory());
         return template;
+    }
+
+    // 키워드 검색에 필요한 redis
+    @Bean
+    public RedisConnectionFactory keywordRedisConnectionFactory() {
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration("localhost", 6380);
+        config.setDatabase(4);
+        return new LettuceConnectionFactory(config);
+    }
+
+    @Bean
+    public StringRedisTemplate stringRedisTemplate() {
+        return new StringRedisTemplate(keywordRedisConnectionFactory());
     }
 }

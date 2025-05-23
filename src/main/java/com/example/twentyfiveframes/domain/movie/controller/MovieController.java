@@ -1,5 +1,6 @@
 package com.example.twentyfiveframes.domain.movie.controller;
 
+import com.example.twentyfiveframes.domain.movie.dto.KeywordSearchResponseDto;
 import com.example.twentyfiveframes.domain.movie.dto.MovieRequestDto;
 import com.example.twentyfiveframes.domain.movie.dto.MovieResponseDto;
 import com.example.twentyfiveframes.domain.movie.entity.Movie;
@@ -66,10 +67,10 @@ public class MovieController {
 
     // 키워드 기반 영화 검색, 제목과 장르 키워드를 이용해 영화 리스트 반환
     @GetMapping("/search")
-    public ResponseEntity<List<Movie>> searchMovies(
+    public ResponseEntity<List<KeywordSearchResponseDto>> searchMovies(
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String genre) {
-        List<Movie> result = movieService.search(title, genre);
+        List<KeywordSearchResponseDto> result = movieService.search(title, genre);
         return ResponseEntity.ok(result);
     }
 

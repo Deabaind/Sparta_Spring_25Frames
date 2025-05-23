@@ -1,5 +1,6 @@
 package com.example.twentyfiveframes.domain.movie.service;
 
+import com.example.twentyfiveframes.domain.movie.dto.KeywordSearchResponseDto;
 import com.example.twentyfiveframes.domain.movie.dto.MovieRequestDto;
 import com.example.twentyfiveframes.domain.movie.dto.MovieResponseDto;
 import com.example.twentyfiveframes.domain.movie.entity.Movie;
@@ -23,7 +24,7 @@ public interface MovieService {
     void deleteMovie(Long userId, Long movieId);
 
     // 키워드 기반 영화 검색
-    List<Movie> search(String title, String genre);
+    List<KeywordSearchResponseDto> search(String title, String genre);
 
     // 인기 검색어 상위 N개 조회
     List<String> topKeywords(int limit);
