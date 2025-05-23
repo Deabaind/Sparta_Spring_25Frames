@@ -2,13 +2,13 @@ package com.example.twentyfiveframes.domain.auth.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
 
 @Service
-@RequiredArgsConstructor
 public class AuthRedisService {
 
     @Qualifier("refreshRedisTemplate")
@@ -16,6 +16,16 @@ public class AuthRedisService {
 
     @Qualifier("accessRedisTemplate")
     private final RedisTemplate<String, String> accessRedisTemplate;
+
+    public AuthRedisService(
+            @Qualifier("refreshRedisTemplate")
+            RedisTemplate<String, String> refreshRedisTemplate,
+
+            @Qualifier("accessRedisTemplate")
+            RedisTemplate<String, String> accessRedisTemplate) {
+        this.refreshRedisTemplate = refreshRedisTemplate;
+        this.accessRedisTemplate = accessRedisTemplate;
+    }
 
     private static final String PREFIX = "refresh:user:";
     private static final String BLACKLIST = "blackList:";
