@@ -54,26 +54,24 @@ public class Movie extends BaseEntity {
     @Column(nullable = false)
     private Long totalViews = 0L;
 
-    public Movie(User user, MovieRequestDto.Save dto) {
+    public Movie(User user, String title, String summary, String director, Integer ageLimit, MovieGenre genre,
+                 Integer runningTime, LocalDate releaseDate) {
         this.user = user;
-        this.title = dto.getTitle();
-        this.summary = dto.getSummary();
-        this.director = dto.getDirector();
-        this.ageLimit = dto.getAgeLimit();
-        this.genre = dto.getGenre();
-        this.runningTime = dto.getRunningTime();
-        this.releaseDate = dto.getReleaseDate();
+        this.title = title;
+        this.summary = summary;
+        this.director = director;
+        this.ageLimit = ageLimit;
+        this.genre = genre;
+        this.runningTime = runningTime;
+        this.releaseDate = releaseDate;
     }
 
-    public void update(MovieRequestDto.Update dto) {
-        if (dto.getTitle() != null) this.title = dto.getTitle();
-        if (dto.getSummary() != null) this.summary = dto.getSummary();
-        if (dto.getDirector() != null) this.director = dto.getDirector();
-        if (dto.getAgeLimit() != null) this.ageLimit = dto.getAgeLimit();
-        if (dto.getGenre() != null) this.genre = dto.getGenre();
-        if (dto.getRunningTime() != null) this.runningTime = dto.getRunningTime();
-    }
-
+    public void updateTitle(String title) {this.title = title;}
+    public void updateSummary(String summary) {this.summary = summary;}
+    public void updateDirector(String director) {this.director = director;}
+    public void updateAgeLimit(Integer ageLimit) {this.ageLimit = ageLimit;}
+    public void updateMovieGenre(MovieGenre genre) {this.genre = genre;}
+    public void updateRunningTime(Integer runningTime) {this.runningTime = runningTime;}
     public void updateAverageRating(Double averageRating) {
         this.averageRating = averageRating;
     }

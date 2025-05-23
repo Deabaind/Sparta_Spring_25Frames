@@ -85,7 +85,7 @@ public class RedisConfig {
         return new LettuceConnectionFactory(config);
     }
 
-    @Bean
+    @Bean(name = "stringRedisTemplate")
     public StringRedisTemplate stringRedisTemplate() {
         return new StringRedisTemplate(keywordRedisConnectionFactory());
     }

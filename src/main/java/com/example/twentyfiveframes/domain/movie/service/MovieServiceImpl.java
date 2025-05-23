@@ -1,5 +1,7 @@
 package com.example.twentyfiveframes.domain.movie.service;
 
+import com.example.twentyfiveframes.domain.CustomException;
+import com.example.twentyfiveframes.domain.ErrorCode;
 import com.example.twentyfiveframes.domain.movie.cache.KeywordCounter;
 import com.example.twentyfiveframes.domain.movie.dto.KeywordSearchResponseDto;
 import com.example.twentyfiveframes.domain.movie.dto.MovieRequestDto;
@@ -14,15 +16,13 @@ import com.example.twentyfiveframes.domain.reviewLike.repository.ReviewLikeRepos
 import com.example.twentyfiveframes.domain.user.entity.User;
 import com.example.twentyfiveframes.domain.user.entity.UserType;
 import com.example.twentyfiveframes.domain.user.service.UserService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -42,7 +42,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public Movie getMovieById(Long movieId) {
         return movieRepository.findById(movieId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 영화입니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.MOVIE_NOT_FOUND));
     }
 
     // 영화 등록
@@ -50,10 +50,10 @@ public class MovieServiceImpl implements MovieService {
     public MovieResponseDto.Save saveMovie(Long userId, MovieRequestDto.Save dto) {
         User authUser = userService.getUserByUserId(userId);
         if (!authUser.getRole().equals(UserType.ROLE_PROVIDER)) {
-            throw new AccessDeniedException("영화를 등록할 권한이 없습니다.");
+            throw new CustomException(ErrorCode.MOVIE_ACCESS_DENIED);
         }
 
-        Movie movie = new Movie(authUser, dto);
+        Movie movie = dto.toEntity(authUser);
         movieRepository.save(movie);
 
         return new MovieResponseDto.Save("영화가 등록되었습니다.", movie.getId());
@@ -125,10 +125,10 @@ public class MovieServiceImpl implements MovieService {
         Movie movie = getMovieById(movieId);
 
         if (!userId.equals(movie.getUser().getId())) {
-            throw new AccessDeniedException("영화 수정 권한이 없습니다.");
+            throw new CustomException(ErrorCode.MOVIE_UPDATE_DENIED);
         }
 
-        movie.update(dto);
+        dto.update(movie);
     }
 
     // 영화 삭제
@@ -137,7 +137,7 @@ public class MovieServiceImpl implements MovieService {
     public void deleteMovie(Long userId, Long movieId) {
         Movie movie = getMovieById(movieId);
         if (!userId.equals(movie.getUser().getId())) {
-            throw new AccessDeniedException("영화 삭제 권한이 없습니다.");
+            throw new CustomException(ErrorCode.MOVIE_DELETE_DENIED);
         }
         movie.softDelete();
     }

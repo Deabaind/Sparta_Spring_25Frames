@@ -1,6 +1,8 @@
 package com.example.twentyfiveframes.domain.movie.dto;
 
+import com.example.twentyfiveframes.domain.movie.entity.Movie;
 import com.example.twentyfiveframes.domain.movie.entity.MovieGenre;
+import com.example.twentyfiveframes.domain.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotBlank;
@@ -13,7 +15,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 public class MovieRequestDto {
-
 
     // 영화 등록
     @Getter
@@ -44,6 +45,10 @@ public class MovieRequestDto {
         @NotNull(message = "영화 개봉일은 필수 입력 항목입니다.")
         @JsonFormat(pattern = "yyyy-MM-dd")
         private LocalDate releaseDate;
+
+        public Movie toEntity(User user) {
+            return new Movie(user, title, summary, director, ageLimit, genre, runningTime, releaseDate);
+        }
     }
 
 
@@ -66,6 +71,16 @@ public class MovieRequestDto {
         private MovieGenre genre;
 
         private Integer runningTime;
+
+        public void update(Movie movie) {
+            if (this.title != null) movie.updateTitle(title);
+            if (this.summary != null) movie.updateSummary(summary);
+            if (this.director != null) movie.updateDirector(director);
+            if (this.ageLimit != null) movie.updateAgeLimit(ageLimit);
+            if (this.genre != null) movie.updateMovieGenre(genre);
+            if (this.runningTime != null) movie.updateRunningTime(runningTime);
+
+        }
 
     }
 
