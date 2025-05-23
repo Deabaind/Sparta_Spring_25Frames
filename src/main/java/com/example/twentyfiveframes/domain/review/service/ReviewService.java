@@ -2,8 +2,8 @@ package com.example.twentyfiveframes.domain.review.service;
 
 import com.example.twentyfiveframes.domain.movie.entity.Movie;
 import com.example.twentyfiveframes.domain.movie.service.MovieService;
-import com.example.twentyfiveframes.domain.CustomException;
-import com.example.twentyfiveframes.domain.ErrorCode;
+import com.example.twentyfiveframes.exception.CustomException;
+import com.example.twentyfiveframes.exception.ErrorCode;
 import com.example.twentyfiveframes.domain.review.dto.ReviewRequestDto;
 import com.example.twentyfiveframes.domain.review.dto.ReviewResponseDto;
 import com.example.twentyfiveframes.domain.review.dto.ReviewUpdateRequestDto;

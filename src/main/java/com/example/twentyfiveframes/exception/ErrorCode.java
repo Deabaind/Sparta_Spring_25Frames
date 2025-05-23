@@ -1,4 +1,4 @@
-package com.example.twentyfiveframes.domain;
+package com.example.twentyfiveframes.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
