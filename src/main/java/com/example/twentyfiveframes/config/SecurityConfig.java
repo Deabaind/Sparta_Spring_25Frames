@@ -61,7 +61,8 @@ public class SecurityConfig {
                                 "/movies/{movieId}",
                                 "/movies?genre={String}&title={title}",
                                 "/movies/popular",
-                                "/movies/ranking"
+                                "/movies/ranking",
+                                "/reviews/movie/{movieId}"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

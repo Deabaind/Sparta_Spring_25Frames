@@ -214,7 +214,8 @@ public class JwtService {
                 .parseClaimsJws(refreshToken)
                 .getBody()
                 .getExpiration();
-        long time = expiration.getTime() / 1000;
+        Date now = new Date();
+        long time = (expiration.getTime() - now.getTime()) / 60000;
         authRedisService.blackList(refreshToken, time, TimeUnit.MINUTES);
     }
 }
