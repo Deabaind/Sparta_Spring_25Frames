@@ -7,11 +7,9 @@ import com.example.twentyfiveframes.domain.movie.repository.MovieRepository;
 import com.example.twentyfiveframes.domain.review.dto.ReviewWithLikeDto;
 import com.example.twentyfiveframes.domain.review.entity.Review;
 import com.example.twentyfiveframes.domain.review.repository.ReviewRepository;
-
 import com.example.twentyfiveframes.domain.reviewLike.dto.ReviewLikeCountDto;
 import com.example.twentyfiveframes.domain.reviewLike.repository.ReviewLikeRepository;
 import com.example.twentyfiveframes.domain.user.entity.User;
-
 import com.example.twentyfiveframes.domain.user.entity.UserType;
 import com.example.twentyfiveframes.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -62,7 +60,13 @@ public class MovieServiceImpl implements MovieService{
     public Page<MovieResponseDto.GetAll> getAllMovies(Pageable pageable) {
 
         return movieRepository.findAll(pageable)
-                .map(MovieResponseDto.GetAll::from);
+                .map(movie -> new MovieResponseDto.GetAll(
+                        movie.getId(),
+                        movie.getTitle(),
+                        movie.getSummary(),
+                        movie.getGenre().name(),
+                        movie.getAverageRating()
+                ));
     }
     
     // 영화 단건 조회

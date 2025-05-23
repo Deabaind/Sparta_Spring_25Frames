@@ -28,22 +28,16 @@ public class MovieResponseDto {
         private final String genre;
         private final Double averageRating;
 
-        public static GetAll from(Movie movie) {
-            Double averageRating = movie.getAverageRating();
-            Double rounded = null;
 
-            if(averageRating != null) {
-                rounded = Math.round(averageRating * 10) / 10.0;
-            }
-
-            return new GetAll(
-                    movie.getId(),
-                    movie.getTitle(),
-                    movie.getSummary(),
-                    movie.getGenre().toString(),
-                    rounded
-            );
-        }
+//        public static GetAll from(Movie movie) {
+//            return new GetAll(
+//                    movie.getId(),
+//                    movie.getTitle(),
+//                    movie.getSummary(),
+//                    movie.getGenre().toString(),
+//                    movie.getAverageRating()
+//            );
+//        }
     }
 
     @Getter
