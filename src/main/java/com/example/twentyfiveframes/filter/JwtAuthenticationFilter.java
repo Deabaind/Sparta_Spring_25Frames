@@ -24,18 +24,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String method = request.getMethod();
+        String uri = request.getRequestURI();
+
+        if (isAuthRequest(method, uri)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         String accessToken = jwtService.resolveAccessToken(request);
         String refreshToken = jwtService.resolveRefreshToken(request);
 
         if (StringUtils.hasText(accessToken) && jwtService.validateAccessToken(accessToken)) {
-            log.info("accessToken 인증 성공");
+            log.info("AccessToken 인증 성공");
 
             setAuthentication(accessToken, request);
         } else if (StringUtils.hasText(refreshToken) && jwtService.validateToken(refreshToken)) {
-            log.info("refreshToken 인증 성공 및 accessToken 재발급");
+            log.info("RefreshToken 인증 성공");
 
-            String newAccessToken = reissueToken(refreshToken, response);
+            String newAccessToken = reissueToken(method, uri, refreshToken, response);
+            log.info("Token 재발급 성공");
 
             setAuthentication(newAccessToken, request);
         }
@@ -54,7 +62,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     // 토큰 재발급
-    private String reissueToken(String refreshToken, HttpServletResponse response){
+    private String reissueToken(String method, String uri, String refreshToken, HttpServletResponse response){
+        if (isReissueDisabledRequest(method, uri)) {
+            throw new IllegalArgumentException("로그아웃 또는 회원 탈퇴 요청에는 토큰이 재발급되지 않습니다.");
+        }
 
         String newAccessToken = jwtService.createAccessToken(refreshToken);
         String newRefreshToken = jwtService.createRefreshToken(refreshToken);
@@ -63,5 +74,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         response.setHeader("Authorization-refresh", "Bearer " + newRefreshToken);
 
         return newAccessToken;
+    }
+
+    // 회원가입, 로그인 요청 확인
+    private boolean isAuthRequest(String method, String uri) {
+        return ("POST".equals(method) && "/signup".equals(uri)) ||
+                ("POST".equals(method) && "/login".equals(uri));
+    }
+
+    // 로그아웃, 회원 탈퇴 요청 확인
+    private boolean isReissueDisabledRequest(String method, String uri) {
+        return ("POST".equals(method) && "/logout".equals(uri)) ||
+                ("DELETE".equals(method) && "/users".equals(uri));
     }
 }
