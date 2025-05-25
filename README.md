@@ -22,7 +22,7 @@
 
 ### 🖍️ 와이어 프레임 🔗 [wiki로 연결](https://github.com/Deabaind/Sparta_Spring_25Frames/wiki/%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84)
 ### 📄 API 문서 🔗 [Postman으로 연결](https://documenter.getpostman.com/view/43234443/2sB2qajMst#intro)
-### 🔍 SA 문서 및 트러블 슈팅 🔗 [notion으로 연결](https://www.notion.so/Chapter-4-S-A-1dc1e5c01907809d8c88c72ac1592d85#1e31e5c0190780f5b3cacb9ff384a198)
+### 🔍 SA 문서 및 트러블 슈팅 🔗 [notion으로 연결](https://teamsparta.notion.site/SA-1f52dc3ef51480dfa649fe7cdf9090bb)
 <br>
 
 ## 🧱인프라 아키텍쳐& 적용기술
