@@ -1,7 +1,7 @@
 package com.example.twentyfiveframes.domain.movie.service;
 
-import com.example.twentyfiveframes.domain.CustomException;
-import com.example.twentyfiveframes.domain.ErrorCode;
+import com.example.twentyfiveframes.exception.CustomException;
+import com.example.twentyfiveframes.exception.ErrorCode;
 import com.example.twentyfiveframes.domain.movie.cache.KeywordCounter;
 import com.example.twentyfiveframes.domain.movie.dto.KeywordSearchResponseDto;
 import com.example.twentyfiveframes.domain.movie.dto.MovieRequestDto;
