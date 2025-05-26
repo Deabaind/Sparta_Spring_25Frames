@@ -25,7 +25,7 @@
 ### 🔍 SA 문서 및 트러블 슈팅 🔗 [notion으로 연결](https://teamsparta.notion.site/SA-1f52dc3ef51480dfa649fe7cdf9090bb)
 <br>
 
-## 🧱인프라 아키텍쳐& 적용기술
+## 🧱인프라 아키텍쳐 & 적용기술
 ```
 [사용자]
    |
