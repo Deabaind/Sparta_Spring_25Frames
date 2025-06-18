@@ -4,7 +4,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-application.yml
+src/main/resources/application.yml
 
 ### STS ###
 .apt_generated
@@ -36,3 +36,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+.DS_Store
+.application-example
+.application.yml
+.docker-compose.yml
